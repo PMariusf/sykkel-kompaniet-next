@@ -4,11 +4,11 @@ import { useState } from "react";
 import Logo from "@/components/Logo";
 
 const navItems = [
-  { label: "Hjem", href: "#" },
-  { label: "Sykkeldeler", href: "#kategorier" },
-  { label: "Merker", href: "#merker" },
-  { label: "Tilbud", href: "#produkter" },
-  { label: "Kontakt", href: "#kontakt" },
+  { label: "Hjem", href: "/" },
+  { label: "Sykkeldeler", href: "/kategorier" },
+  { label: "Merker", href: "/#merker" },
+  { label: "Tilbud", href: "/#produkter" },
+  { label: "Kontakt", href: "/#kontakt" },
 ];
 
 export default function Navbar() {
@@ -17,16 +17,16 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#06090a]/95 backdrop-blur-xl">
       <div className="mx-auto flex h-[68px] max-w-[1420px] items-center gap-4 px-4 sm:h-[72px] sm:px-6 lg:gap-6 lg:px-8">
-        <a href="#" aria-label="Sykkel Deler" className="shrink-0" onClick={() => setMenuOpen(false)}>
+        <a href="/" aria-label="Sykkel Deler" className="shrink-0" onClick={() => setMenuOpen(false)}>
           <Logo />
         </a>
 
         <nav className="ml-auto hidden items-center gap-7 text-[13px] font-semibold text-zinc-300 lg:flex">
-          <a className="relative text-[#c9ff35] after:absolute after:left-0 after:-bottom-[1.35rem] after:h-[2px] after:w-full after:bg-[#c9ff35] after:content-['']" href="#">Hjem</a>
-          <a className="transition hover:text-white" href="#kategorier">Sykkeldeler⌄</a>
-          <a className="transition hover:text-white" href="#merker">Merker⌄</a>
-          <a className="transition hover:text-white" href="#produkter">Tilbud</a>
-          <a className="transition hover:text-white" href="#kontakt">Kontakt</a>
+          <a className="transition hover:text-white" href="/">Hjem</a>
+          <a className="transition hover:text-[#c9ff35]" href="/kategorier">Sykkeldeler⌄</a>
+          <a className="transition hover:text-white" href="/#merker">Merker⌄</a>
+          <a className="transition hover:text-white" href="/#produkter">Tilbud</a>
+          <a className="transition hover:text-white" href="/#kontakt">Kontakt</a>
         </nav>
 
         <div className="ml-auto hidden h-10 min-w-[330px] items-center rounded-lg border border-white/10 bg-white/[.035] px-3 text-[12px] text-zinc-500 md:flex lg:ml-4">
