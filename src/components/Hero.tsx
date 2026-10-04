@@ -25,14 +25,18 @@ export default function Hero() {
 
       <div className="mx-auto flex min-h-[520px] max-w-[1420px] items-center px-4 pb-28 pt-16 sm:px-6 lg:px-8">
         <div className="max-w-[620px]">
-          <p className="mb-3 text-[11px] font-black tracking-[.34em] text-[#c9ff35] sm:text-xs">
+          <p className="mb-3 text-[11px] font-black tracking-[.34em] text-[#c9ff35] drop-shadow-[0_2px_8px_rgba(0,0,0,.45)] sm:text-xs">
             KVALITET GIR BEDRE TURER
           </p>
 
-          <h1 className="text-[3.3rem] font-black leading-[.88] tracking-[-.055em] text-white sm:text-6xl lg:text-[4.7rem]">
-            Deler til
+          <h1 className="text-[3.3rem] font-black leading-[.88] tracking-[-.055em] sm:text-6xl lg:text-[4.7rem]">
+            <span className="bg-[linear-gradient(180deg,#ffffff_0%,#dcdcdc_38%,#8d8d8d_73%,#f4f4f4_100%)] bg-clip-text text-transparent drop-shadow-[0_4px_18px_rgba(0,0,0,.65)]">
+              Deler til
+            </span>
             <br />
-            <span className="text-zinc-200">sykkelen din</span>
+            <span className="bg-[linear-gradient(180deg,#f4f4f4_0%,#cfcfcf_42%,#777777_78%,#d7d7d7_100%)] bg-clip-text text-transparent drop-shadow-[0_4px_18px_rgba(0,0,0,.65)]">
+              sykkelen din
+            </span>
           </h1>
 
           <p className="mt-5 max-w-[520px] text-base leading-6 text-zinc-200 sm:text-lg">
