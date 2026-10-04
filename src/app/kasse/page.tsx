@@ -14,6 +14,10 @@ function formatPrice(value: number) {
   }).format(value);
 }
 
+function priceToNumber(price: string) {
+  return Number(price.replace(/[^0-9]/g, ""));
+}
+
 const inputClass =
   "w-full rounded-md border border-white/10 bg-white/[.035] px-3 py-3 text-sm text-white outline-none placeholder:text-zinc-600 transition focus:border-[#c9ff35]/60";
 
@@ -149,7 +153,7 @@ export default function CheckoutPage() {
                         <p className="truncate text-[11px] font-bold text-white">{item.name}</p>
                         <p className="mt-1 text-[10px] text-zinc-500">Antall: {item.quantity}</p>
                       </div>
-                      <span className="text-xs font-black text-white">{formatPrice(item.unitPrice * item.quantity)}</span>
+                      <span className="text-xs font-black text-white">{formatPrice(priceToNumber(item.price) * item.quantity)}</span>
                     </div>
                   ))}
                 </div>
