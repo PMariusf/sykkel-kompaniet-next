@@ -1,5 +1,12 @@
 import Image from "next/image";
 
+const trustItems = [
+  ["▣", "Rask levering", "1–3 virkedager"],
+  ["⬡", "Trygg handel", "Sikre betalingsløsninger"],
+  ["◇", "Stort utvalg", "Kjente merkevarer"],
+  ["☆", "Eksperthjelp", "Vi hjelper deg å velge"],
+];
+
 export default function Hero() {
   return (
     <section className="relative isolate overflow-hidden border-b border-white/10 bg-black">
@@ -12,54 +19,49 @@ export default function Hero() {
         className="-z-20 object-cover object-center"
       />
 
-      <div className="absolute inset-0 -z-10 bg-black/35" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black via-black/80 to-black/10" />
-      <div className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-t from-[#07090a] to-transparent" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/95 via-black/65 to-black/5" />
+      <div className="absolute inset-y-0 left-0 -z-10 w-[55%] bg-black/20" />
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-28 bg-gradient-to-t from-[#06090a]/95 to-transparent" />
 
-      <div className="mx-auto flex min-h-[640px] max-w-7xl items-center px-5 py-24 lg:min-h-[720px] lg:px-8">
-        <div className="max-w-2xl">
-          <p className="mb-4 text-xs font-black tracking-[.24em] text-[#c9ff35] sm:text-sm">
+      <div className="mx-auto flex min-h-[520px] max-w-[1420px] items-center px-4 pb-28 pt-16 sm:px-6 lg:px-8">
+        <div className="max-w-[620px]">
+          <p className="mb-3 text-[11px] font-black tracking-[.34em] text-[#c9ff35] sm:text-xs">
             KVALITET GIR BEDRE TURER
           </p>
 
-          <h1 className="text-5xl font-black leading-[.92] tracking-[-.055em] text-white sm:text-6xl lg:text-[5.8rem]">
+          <h1 className="text-[3.3rem] font-black leading-[.88] tracking-[-.055em] text-white sm:text-6xl lg:text-[4.7rem]">
             Deler til
             <br />
-            <span className="text-zinc-300">sykkelen din</span>
+            <span className="text-zinc-200">sykkelen din</span>
           </h1>
 
-          <p className="mt-7 max-w-xl text-base leading-7 text-zinc-300 sm:text-lg sm:leading-8">
-            Kvalitetsdeler for vei, terreng og hverdagssykling. Stort utvalg fra ledende merkevarer.
+          <p className="mt-5 max-w-[520px] text-base leading-6 text-zinc-200 sm:text-lg">
+            Kvalitetsdeler for vei, terreng og hverdagssykling.
+            <br className="hidden sm:block" /> Stort utvalg fra ledende merkevarer.
           </p>
 
-          <div className="mt-9 flex flex-wrap gap-3">
-            <a
-              href="#produkter"
-              className="rounded-lg bg-[#c9ff35] px-6 py-3.5 font-black text-black transition hover:bg-[#d8ff68]"
-            >
-              Se sykkeldeler →
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a href="#produkter" className="rounded-md bg-[#c9ff35] px-6 py-3 text-sm font-black text-black shadow-[0_0_24px_rgba(201,255,53,.16)] transition hover:bg-[#d8ff68]">
+              Se sykkeldeler <span className="ml-2">→</span>
             </a>
-            <a
-              href="#kategorier"
-              className="rounded-lg border border-white/20 bg-black/35 px-6 py-3.5 font-bold text-white backdrop-blur-sm transition hover:border-white/35 hover:bg-black/50"
-            >
-              Finn riktig del
+            <a href="#kategorier" className="rounded-md border border-white/35 bg-black/30 px-6 py-3 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-black/45">
+              ⌕ <span className="ml-2">Finn riktig del</span>
             </a>
           </div>
+        </div>
+      </div>
 
-          <div className="mt-10 grid max-w-3xl grid-cols-2 gap-3 lg:grid-cols-4">
-            {[
-              ["Rask levering", "1–3 virkedager"],
-              ["Trygg handel", "Sikre betalingsløsninger"],
-              ["Stort utvalg", "Kjente merkevarer"],
-              ["Eksperthjelp", "Vi hjelper deg å velge"],
-            ].map(([title, text]) => (
-              <div key={title} className="rounded-xl border border-white/10 bg-black/35 p-4 backdrop-blur-sm">
-                <p className="text-sm font-bold text-white">{title}</p>
-                <p className="mt-1 text-xs leading-5 text-zinc-400">{text}</p>
+      <div className="absolute inset-x-0 bottom-0 border-t border-white/10 bg-black/35 backdrop-blur-sm">
+        <div className="mx-auto grid max-w-[1420px] grid-cols-2 gap-y-3 px-4 py-4 sm:px-6 lg:grid-cols-4 lg:px-8">
+          {trustItems.map(([icon, title, text], index) => (
+            <div key={title} className={`flex items-center gap-3 ${index > 0 ? "lg:border-l lg:border-white/10 lg:pl-6" : ""}`}>
+              <span className="text-2xl text-[#c9ff35]">{icon}</span>
+              <div>
+                <p className="text-xs font-black text-white">{title}</p>
+                <p className="mt-0.5 text-[10px] text-zinc-400">{text}</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
