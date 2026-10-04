@@ -1,13 +1,6 @@
 import Image from "next/image";
-
-const categories = [
-  { name: "Bremser", image: "/products/bremse.png" },
-  { name: "Drivverk", image: "/products/driverk.png" },
-  { name: "Dekk & slanger", image: "/products/dekk.png" },
-  { name: "Hjul", image: "/products/hjul.png" },
-  { name: "Pedaler", image: "/products/pedaler.png" },
-  { name: "Styre & cockpit", image: "/products/styre.png" },
-];
+import Link from "next/link";
+import { categories } from "@/data/categories";
 
 export default function CategoryGrid() {
   return (
@@ -18,14 +11,14 @@ export default function CategoryGrid() {
             <p className="text-[10px] font-black tracking-[.34em] text-[#c9ff35]">KATEGORIER</p>
             <h2 className="mt-1.5 text-[1.7rem] font-black tracking-tight text-white sm:text-3xl">Finn deler etter kategori</h2>
           </div>
-          <a href="#produkter" className="hidden text-xs font-bold text-[#c9ff35] sm:block">Se alle kategorier →</a>
+          <Link href="/kategorier" className="hidden text-xs font-bold text-[#c9ff35] sm:block">Se alle kategorier →</Link>
         </div>
 
         <div className="mt-4 grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:grid-cols-6">
           {categories.map((category) => (
-            <a
-              key={category.name}
-              href="#produkter"
+            <Link
+              key={category.slug}
+              href={`/kategori/${category.slug}`}
               className="group relative h-[142px] overflow-hidden rounded-md border border-white/15 bg-[#0b1011] transition hover:border-[#c9ff35]/45 sm:h-[150px] lg:h-[138px]"
             >
               <Image
@@ -40,13 +33,13 @@ export default function CategoryGrid() {
                 <strong className="text-[13px] font-black leading-4 text-white sm:text-sm">{category.name}</strong>
                 <span className="shrink-0 text-base text-[#c9ff35] transition group-hover:translate-x-0.5">→</span>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
 
-        <a href="#produkter" className="mt-4 inline-flex text-xs font-bold text-[#c9ff35] sm:hidden">
+        <Link href="/kategorier" className="mt-4 inline-flex text-xs font-bold text-[#c9ff35] sm:hidden">
           Se alle kategorier →
-        </a>
+        </Link>
       </div>
     </section>
   );
