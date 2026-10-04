@@ -29,13 +29,21 @@ export default function Navbar() {
           <a className="transition hover:text-white" href="/#kontakt">Kontakt</a>
         </nav>
 
-        <div className="ml-auto hidden h-10 min-w-[330px] items-center rounded-lg border border-white/10 bg-white/[.035] px-3 text-[12px] text-zinc-500 md:flex lg:ml-4">
+        <form action="/sok" method="get" role="search" className="ml-auto hidden h-10 min-w-[330px] items-center rounded-lg border border-white/10 bg-white/[.035] px-3 text-[12px] text-zinc-500 transition focus-within:border-[#c9ff35]/50 md:flex lg:ml-4">
           <svg aria-hidden="true" viewBox="0 0 24 24" className="mr-2 h-4 w-4 shrink-0 fill-none stroke-zinc-300" strokeWidth="1.8">
             <circle cx="11" cy="11" r="6.5" />
             <path d="m16 16 4 4" />
           </svg>
-          <span className="truncate">Søk etter produkter, merker eller deler ...</span>
-        </div>
+          <label htmlFor="navbar-search" className="sr-only">Søk etter produkter</label>
+          <input
+            id="navbar-search"
+            name="q"
+            type="search"
+            placeholder="Søk etter produkter, merker eller deler ..."
+            className="min-w-0 flex-1 bg-transparent text-[12px] text-white outline-none placeholder:text-zinc-500"
+          />
+          <button type="submit" className="ml-2 text-[10px] font-black text-[#c9ff35]">SØK</button>
+        </form>
 
         <button aria-label="Konto" className="hidden h-10 w-10 items-center justify-center text-zinc-200 md:flex">
           <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current" strokeWidth="1.7">
@@ -72,13 +80,21 @@ export default function Navbar() {
       {menuOpen && (
         <div className="border-t border-white/10 bg-[#070a0b] px-4 pb-5 pt-4 shadow-2xl lg:hidden">
           <div className="mx-auto max-w-[1420px]">
-            <div className="flex h-11 items-center rounded-md border border-white/10 bg-white/[.035] px-3 text-sm text-zinc-500 md:hidden">
-              <svg aria-hidden="true" viewBox="0 0 24 24" className="mr-2 h-4 w-4 fill-none stroke-zinc-300" strokeWidth="1.8">
+            <form action="/sok" method="get" role="search" className="flex h-11 items-center rounded-md border border-white/10 bg-white/[.035] px-3 text-sm text-zinc-500 md:hidden">
+              <svg aria-hidden="true" viewBox="0 0 24 24" className="mr-2 h-4 w-4 shrink-0 fill-none stroke-zinc-300" strokeWidth="1.8">
                 <circle cx="11" cy="11" r="6.5" />
                 <path d="m16 16 4 4" />
               </svg>
-              Søk etter produkter ...
-            </div>
+              <label htmlFor="mobile-search" className="sr-only">Søk etter produkter</label>
+              <input
+                id="mobile-search"
+                name="q"
+                type="search"
+                placeholder="Søk etter produkter ..."
+                className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-zinc-500"
+              />
+              <button type="submit" className="ml-2 text-[10px] font-black text-[#c9ff35]">SØK</button>
+            </form>
 
             <nav className="mt-3 grid text-sm font-semibold text-zinc-200">
               {navItems.map((item, index) => (
