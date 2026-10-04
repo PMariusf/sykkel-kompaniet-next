@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import AddToCartButton from "@/components/AddToCartButton";
 import { products } from "@/data/products";
 
 export default function ProductGrid() {
@@ -42,10 +43,7 @@ export default function ProductGrid() {
               </Link>
 
               <div className="p-2.5 pt-0 sm:p-3 sm:pt-0">
-                <button className="mt-2.5 w-full rounded-md bg-[#c9ff35] px-2 py-2.5 text-[10px] font-black text-black transition hover:bg-[#d8ff68] sm:text-[11px]">
-                  <span className="sm:hidden">Legg i kurv</span>
-                  <span className="hidden sm:inline">🛒 <span className="ml-1">Legg i handlekurv</span></span>
-                </button>
+                <AddToCartButton product={product} compact />
               </div>
             </article>
           ))}
