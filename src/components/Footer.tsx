@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
-    <footer id="kontakt" className="bg-[#050708]">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:px-8">
+    <footer id="kontakt" className="bg-[#050809]">
+      <div className="mx-auto grid max-w-[1420px] gap-8 px-4 py-5 sm:grid-cols-2 sm:px-6 lg:grid-cols-[1.35fr_.9fr_.9fr_1.1fr] lg:px-8">
         <div>
           <div className="flex items-center gap-3">
             <span className="relative text-3xl font-black italic tracking-[-0.18em] text-zinc-100">
@@ -13,34 +13,36 @@ export default function Footer() {
               <span className="mt-1 text-[9px] tracking-[.3em] text-zinc-500">KOMPANIET</span>
             </span>
           </div>
-          <p className="mt-5 max-w-sm text-sm leading-6 text-zinc-500">
-            Demo av en fremtidig nettbutikk med fokus på sykkeldeler, tydelig lagerstatus og enkel handel.
+          <p className="mt-4 max-w-[290px] text-[11px] leading-5 text-zinc-400">
+            Sykkel Kompaniet er din spesialist på sykkeldeler. Vi tilbyr kvalitetsdeler fra ledende merkevarer, for vei, terreng og hverdagssykling.
           </p>
+          <div className="mt-4 flex gap-4 text-sm text-zinc-300"><span>●</span><span>◎</span><span>▶</span></div>
         </div>
 
         <div>
-          <h3 className="font-bold text-white">Kundeservice</h3>
-          <div className="mt-4 space-y-2 text-sm text-zinc-500">
-            <p>Ofte stilte spørsmål</p><p>Frakt og levering</p><p>Retur og reklamasjon</p><p>Kontakt oss</p>
+          <h3 className="text-sm font-black text-white">Kundeservice</h3>
+          <div className="mt-3 space-y-1.5 text-[11px] text-zinc-400">
+            <p>Ofte stilte spørsmål</p><p>Frakt og levering</p><p>Retur og reklamasjon</p><p>Betalingsalternativer</p><p>Kontakt oss</p>
           </div>
         </div>
 
         <div>
-          <h3 className="font-bold text-white">Informasjon</h3>
-          <div className="mt-4 space-y-2 text-sm text-zinc-500">
-            <p>Om oss</p><p>Vilkår og betingelser</p><p>Personvern</p><p>Cookies</p>
+          <h3 className="text-sm font-black text-white">Informasjon</h3>
+          <div className="mt-3 space-y-1.5 text-[11px] text-zinc-400">
+            <p>Om oss</p><p>Vilkår og betingelser</p><p>Personvern</p><p>Cookies</p><p>Størrelsesguide</p>
           </div>
         </div>
 
         <div>
-          <h3 className="font-bold text-white">Kontakt</h3>
-          <div className="mt-4 space-y-2 text-sm leading-6 text-zinc-500">
-            <p>Sykkel Kompaniet</p>
-            <p>Bedriftsdetaljer kommer når firmaet er klart.</p>
+          <h3 className="text-sm font-black text-white">Kontakt</h3>
+          <div className="mt-3 space-y-2 text-[11px] leading-5 text-zinc-400">
+            <p>⌖ Sykkel Kompaniet AS</p>
+            <p>☎ Kontaktinformasjon kommer</p>
+            <p>✉ post@sykkelkompaniet.no</p>
+            <p>◷ Man–fre 09:00–17:00</p>
           </div>
         </div>
       </div>
-      <div className="border-t border-white/10 py-5 text-center text-xs text-zinc-600">© Sykkel Kompaniet — demo</div>
     </footer>
   );
 }
