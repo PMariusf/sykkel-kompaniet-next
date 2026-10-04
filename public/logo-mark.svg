@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 120" role="img" aria-labelledby="title desc">
+  <title id="title">Sykkel Deler logo</title>
+  <desc id="desc">Metallisk SK-symbol med limegrønn skråstrek.</desc>
+  <defs>
+    <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="38%" stop-color="#d8d8d8"/>
+      <stop offset="72%" stop-color="#8b8b8b"/>
+      <stop offset="100%" stop-color="#f1f1f1"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+  <rect width="180" height="120" fill="none"/>
+  <text x="12" y="88" fill="url(#silver)" filter="url(#shadow)" font-family="Arial Black, Inter, Helvetica, Arial, sans-serif" font-size="82" font-style="italic" font-weight="900" letter-spacing="-10">SK</text>
+  <rect x="140" y="22" width="38" height="10" rx="1" fill="#c9ff35" transform="rotate(-45 159 27)"/>
+</svg>
