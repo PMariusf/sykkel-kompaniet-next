@@ -39,6 +39,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
     .filter((item) => item.category === product.category && item.id !== product.id)
     .slice(0, 3);
 
+  const warehouse = product.warehouseLocation ?? "Arna";
+
   return (
     <>
       <Navbar />
@@ -62,8 +64,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 sizes="(max-width: 1024px) 100vw, 55vw"
                 className="object-contain p-8 sm:p-14"
               />
-              <span className="absolute left-4 top-4 rounded-full bg-[#c9ff35] px-3 py-1.5 text-[10px] font-black tracking-[.12em] text-black">
-                PÅ LAGER
+              <span className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/45 px-3 py-1.5 text-[10px] font-black tracking-[.12em] text-zinc-200 backdrop-blur-sm">
+                LAGER I {warehouse.toUpperCase()}
               </span>
             </div>
 
@@ -75,13 +77,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <p className="mt-3 text-sm font-semibold text-zinc-400">Kategori: {product.category}</p>
 
               <p className="mt-6 text-3xl font-black text-white sm:text-4xl">{product.price}</p>
-              <p className="mt-2 text-sm font-bold text-[#9ce52b]">● På lager – klar til sending</p>
+              <p className="mt-2 text-sm font-bold text-zinc-400">Lagerstatus oppdateres når produktdata er koblet til.</p>
 
               <div className="mt-7 border-y border-white/10 py-5 text-sm leading-7 text-zinc-300">
                 <p>
-                  Dette er en demo-produktside for Sykkel Deler. Endelig produktbeskrivelse,
-                  kompatibilitet og tekniske spesifikasjoner legges inn når leverandørens
-                  produktdata er koblet til nettbutikken.
+                  Produktdata fra leverandør er ikke koblet til ennå. Siden er klargjort for beskrivelse,
+                  varenummer, EAN, kompatibilitet, tekniske spesifikasjoner og faktisk lagerbeholdning.
                 </p>
               </div>
 
@@ -94,7 +95,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
               <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-3">
                 {[
-                  ["Rask levering", "1–3 virkedager"],
+                  ["Lager", warehouse],
                   ["Trygg handel", "Sikre betalingsløsninger"],
                   ["Hjelp til valg", "Vi hjelper deg"],
                 ].map(([title, text]) => (
@@ -110,20 +111,22 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <section className="mt-10 grid gap-4 border-t border-white/10 pt-8 md:grid-cols-3">
             <div className="rounded-md border border-white/10 bg-[#0b0f10] p-5">
               <h2 className="text-sm font-black text-white">Produktinformasjon</h2>
-              <p className="mt-3 text-xs leading-6 text-zinc-400">
-                Produkttekst fra leverandør kan vises her, sammen med materiale, modellserie og bruksområde.
-              </p>
+              <dl className="mt-3 space-y-2 text-xs text-zinc-400">
+                <div className="flex justify-between gap-4"><dt>SKU</dt><dd>{product.sku ?? "Kommer"}</dd></div>
+                <div className="flex justify-between gap-4"><dt>EAN</dt><dd>{product.ean ?? "Kommer"}</dd></div>
+                <div className="flex justify-between gap-4"><dt>Leverandør</dt><dd>{product.supplier ?? "Kommer"}</dd></div>
+              </dl>
             </div>
             <div className="rounded-md border border-white/10 bg-[#0b0f10] p-5">
               <h2 className="text-sm font-black text-white">Kompatibilitet</h2>
               <p className="mt-3 text-xs leading-6 text-zinc-400">
-                Her kan kunden kontrollere at delen passer sykkel, drivverk, hjul eller bremsesystem før kjøp.
+                {product.compatibility?.length ? product.compatibility.join(", ") : "Kompatibilitetsdata kommer fra leverandør."}
               </p>
             </div>
             <div className="rounded-md border border-white/10 bg-[#0b0f10] p-5">
-              <h2 className="text-sm font-black text-white">Levering & retur</h2>
+              <h2 className="text-sm font-black text-white">Lager & levering</h2>
               <p className="mt-3 text-xs leading-6 text-zinc-400">
-                Frakt, forventet leveringstid og returvilkår kan hentes fra butikkens endelige handelsoppsett.
+                Lagerlokasjon: {warehouse}. Beholdning, leveringstid og eventuell henteløsning legges inn når dette er bekreftet.
               </p>
             </div>
           </section>
