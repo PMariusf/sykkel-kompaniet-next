@@ -1,10 +1,36 @@
+import Image from "next/image";
+
 const categories = [
-  { name: "Bremser", icon: "◉", detail: "Skiver, klosser og kalipere" },
-  { name: "Drivverk", icon: "⚙", detail: "Kassett, kjede og gir" },
-  { name: "Dekk & slanger", icon: "◯", detail: "Terreng, vei og hverdag" },
-  { name: "Hjul", icon: "◎", detail: "Felger, nav og hjulsett" },
-  { name: "Pedaler", icon: "▣", detail: "Flate og klikkpedaler" },
-  { name: "Styre & cockpit", icon: "━", detail: "Styre, stem og grep" },
+  {
+    name: "Bremser",
+    detail: "Skiver, klosser og kalipere",
+    image: "/products/bremse.png",
+  },
+  {
+    name: "Drivverk",
+    detail: "Kassett, kjede og gir",
+    image: "/products/driverk.png",
+  },
+  {
+    name: "Dekk & slanger",
+    detail: "Terreng, vei og hverdag",
+    image: "/products/dekk.png",
+  },
+  {
+    name: "Hjul",
+    detail: "Felger, nav og hjulsett",
+    image: "/products/hjul.png",
+  },
+  {
+    name: "Pedaler",
+    detail: "Flate og klikkpedaler",
+    image: "/products/pedaler.png",
+  },
+  {
+    name: "Styre & cockpit",
+    detail: "Styre, stem og grep",
+    image: "/products/styre.png",
+  },
 ];
 
 export default function CategoryGrid() {
@@ -15,7 +41,9 @@ export default function CategoryGrid() {
           <p className="text-xs font-black tracking-[.22em] text-[#c9ff35]">KATEGORIER</p>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Finn deler etter kategori</h2>
         </div>
-        <a href="#produkter" className="hidden text-sm font-bold text-[#c9ff35] sm:block">Se alle kategorier →</a>
+        <a href="#produkter" className="hidden text-sm font-bold text-[#c9ff35] sm:block">
+          Se alle kategorier →
+        </a>
       </div>
 
       <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
@@ -23,16 +51,25 @@ export default function CategoryGrid() {
           <a
             key={category.name}
             href="#produkter"
-            className="group relative min-h-48 overflow-hidden rounded-xl border border-white/10 bg-gradient-to-b from-[#171c1d] to-[#0d1011] p-5 transition duration-300 hover:-translate-y-1 hover:border-[#c9ff35]/35 hover:shadow-[0_12px_35px_rgba(0,0,0,.28)]"
+            className="group relative min-h-52 overflow-hidden rounded-xl border border-white/10 bg-[#0d1011] transition duration-300 hover:-translate-y-1 hover:border-[#c9ff35]/40 hover:shadow-[0_18px_45px_rgba(0,0,0,.35)]"
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(255,255,255,.07),transparent_45%)]" />
-            <span className="absolute right-4 top-3 text-7xl text-zinc-600/45 transition duration-300 group-hover:scale-105 group-hover:text-zinc-500/55">
-              {category.icon}
-            </span>
-            <div className="relative flex h-full flex-col justify-end">
-              <strong className="text-base text-white">{category.name}</strong>
-              <span className="mt-1 text-xs leading-5 text-zinc-500">{category.detail}</span>
-              <span className="mt-4 text-[#c9ff35]">→</span>
+            <Image
+              src={category.image}
+              alt={category.name}
+              fill
+              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
+              className="object-contain p-3 transition duration-500 group-hover:scale-105"
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 z-10 p-4">
+              <div className="flex items-end justify-between gap-3">
+                <div>
+                  <strong className="block text-sm text-white sm:text-base">{category.name}</strong>
+                  <span className="mt-1 hidden text-xs leading-5 text-zinc-400 lg:block">{category.detail}</span>
+                </div>
+                <span className="shrink-0 text-lg text-[#c9ff35] transition duration-300 group-hover:translate-x-1">→</span>
+              </div>
             </div>
           </a>
         ))}
