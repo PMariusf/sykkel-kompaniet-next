@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+:root {
+  --background: #07090a;
+  --foreground: #f5f7f3;
+  --lime: #c9ff35;
+  --panel: #111516;
+  --panel-soft: #171c1d;
+  --line: #2b3233;
+  --muted: #9ba4a2;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 80% 5%, rgba(201,255,53,.06), transparent 28rem),
+    var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection { background: var(--lime); color: #080b08; }
