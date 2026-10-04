@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 104" role="img" aria-labelledby="title desc">
+  <title id="title">Sykkel Deler</title>
+  <desc id="desc">Metallisk SK-logo med limegrønn skråstrek og teksten Sykkel Deler.</desc>
+  <defs>
+    <linearGradient id="silverMark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="38%" stop-color="#d8d8d8"/>
+      <stop offset="72%" stop-color="#8b8b8b"/>
+      <stop offset="100%" stop-color="#f1f1f1"/>
+    </linearGradient>
+    <linearGradient id="silverText" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="48%" stop-color="#d6d6d6"/>
+      <stop offset="100%" stop-color="#8a8a8a"/>
+    </linearGradient>
+    <linearGradient id="silverSub" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eeeeee"/>
+      <stop offset="55%" stop-color="#bcbcbc"/>
+      <stop offset="100%" stop-color="#767676"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-30%" width="150%" height="170%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <text x="10" y="78" fill="url(#silverMark)" font-family="Arial Black, Inter, Helvetica, Arial, sans-serif" font-size="78" font-style="italic" font-weight="900" letter-spacing="-9">SK</text>
+    <rect x="126" y="22" width="38" height="9" rx="1" fill="#c9ff35" transform="rotate(-45 145 26.5)"/>
+  </g>
+
+  <text x="174" y="48" fill="url(#silverText)" font-family="Inter, Helvetica, Arial, sans-serif" font-size="29" font-weight="800" letter-spacing="5">SYKKEL</text>
+  <text x="175" y="75" fill="url(#silverSub)" font-family="Inter, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" letter-spacing="9">DELER</text>
+</svg>
