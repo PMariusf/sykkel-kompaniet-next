@@ -114,21 +114,21 @@ export default function CartPage() {
                   </div>
                   <div className="flex justify-between gap-4 text-zinc-400">
                     <span>Frakt</span>
-                    <span>Beregnes senere</span>
+                    <span>Beregnes i kassen</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between gap-4 py-5">
                   <span className="font-black">Totalt</span>
                   <span className="text-2xl font-black">{formatPrice(subtotal)}</span>
                 </div>
-                <button
-                  type="button"
-                  className="w-full rounded-md bg-[#c9ff35] px-5 py-3.5 text-sm font-black text-black transition hover:bg-[#d8ff68]"
+                <Link
+                  href="/kasse"
+                  className="block w-full rounded-md bg-[#c9ff35] px-5 py-3.5 text-center text-sm font-black text-black transition hover:bg-[#d8ff68]"
                 >
                   Gå til kassen
-                </button>
+                </Link>
                 <p className="mt-3 text-center text-[10px] leading-4 text-zinc-500">
-                  Checkout kobles til når betalingsløsningen er valgt.
+                  Kassen er foreløpig en demo uten ekte betaling.
                 </p>
                 <Link href="/#produkter" className="mt-5 block text-center text-xs font-bold text-[#c9ff35]">
                   ← Fortsett å handle
