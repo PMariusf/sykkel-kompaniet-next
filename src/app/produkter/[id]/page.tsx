@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AddToCartButton from "@/components/AddToCartButton";
 import { products } from "@/data/products";
 
 type ProductPageProps = {
@@ -85,9 +86,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
 
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <button className="flex-1 rounded-md bg-[#c9ff35] px-6 py-3.5 text-sm font-black text-black transition hover:bg-[#d8ff68]">
-                  Legg i handlekurv
-                </button>
+                <AddToCartButton product={product} />
                 <button className="rounded-md border border-white/15 bg-white/[.03] px-6 py-3.5 text-sm font-bold text-white transition hover:border-white/30">
                   ♡ Lagre
                 </button>
