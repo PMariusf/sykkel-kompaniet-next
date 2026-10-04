@@ -38,7 +38,9 @@ export default function ProductGrid() {
                   <p className="truncate text-[8px] font-black tracking-[.14em] text-zinc-400 sm:text-[9px] sm:tracking-[.16em]">{product.brand.toUpperCase()}</p>
                   <h3 className="mt-1 min-h-10 text-[12px] font-bold leading-4 text-zinc-100 transition group-hover:text-white sm:text-[13px]">{product.name}</h3>
                   <p className="mt-2 text-[1.05rem] font-black text-white sm:text-xl">{product.price}</p>
-                  <p className="mt-1 text-[9px] font-bold text-[#9ce52b] sm:text-[10px]">● På lager</p>
+                  <p className="mt-1 text-[9px] font-bold text-zinc-400 sm:text-[10px]">
+                    Lager i {product.warehouseLocation ?? "Arna"} · status kommer
+                  </p>
                 </div>
               </Link>
 
