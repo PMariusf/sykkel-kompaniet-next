@@ -62,7 +62,13 @@ export default function CartPage() {
                       href={`/produkter/${item.id}`}
                       className="relative aspect-square overflow-hidden rounded-md bg-[radial-gradient(circle_at_50%_40%,#202627,#090b0c_72%)]"
                     >
-                      <Image src={item.image} alt={item.name} fill className="object-contain p-2" />
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        sizes="(max-width: 640px) 90px, 120px"
+                        className="object-contain p-2"
+                      />
                     </Link>
 
                     <div className="min-w-0">
