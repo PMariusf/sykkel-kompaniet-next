@@ -147,7 +147,13 @@ export default function CheckoutPage() {
                   {items.map((item) => (
                     <div key={item.id} className="grid grid-cols-[64px_1fr_auto] items-center gap-3">
                       <div className="relative aspect-square overflow-hidden rounded-md bg-[radial-gradient(circle_at_50%_40%,#202627,#090b0c_72%)]">
-                        <Image src={item.image} alt={item.name} fill className="object-contain p-1.5" />
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          sizes="64px"
+                          className="object-contain p-1.5"
+                        />
                       </div>
                       <div className="min-w-0">
                         <p className="truncate text-[11px] font-bold text-white">{item.name}</p>
