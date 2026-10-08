@@ -21,7 +21,7 @@ export default function CategoriesPage() {
 
         <section className="mx-auto max-w-[1420px] px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <Link
                 key={category.slug}
                 href={`/kategori/${category.slug}`}
@@ -31,6 +31,7 @@ export default function CategoriesPage() {
                   src={category.image}
                   alt={category.name}
                   fill
+                  loading={index < 3 ? "eager" : "lazy"}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-contain p-5 transition duration-300 group-hover:scale-[1.035]"
                 />
