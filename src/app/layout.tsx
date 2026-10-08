@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="nb">
+    <html lang="nb" data-scroll-behavior="smooth">
       <body>
         <CartProvider>{children}</CartProvider>
       </body>
