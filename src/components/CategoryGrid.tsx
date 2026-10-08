@@ -15,7 +15,7 @@ export default function CategoryGrid() {
         </div>
 
         <div className="mt-4 grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:grid-cols-6">
-          {categories.map((category) => (
+          {categories.map((category, index) => (
             <Link
               key={category.slug}
               href={`/kategori/${category.slug}`}
@@ -25,6 +25,7 @@ export default function CategoryGrid() {
                 src={category.image}
                 alt={category.name}
                 fill
+                loading={index < 2 ? "eager" : "lazy"}
                 sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
                 className="object-contain p-2 transition duration-300 group-hover:scale-[1.04] sm:p-1.5"
               />
