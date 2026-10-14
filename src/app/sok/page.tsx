@@ -5,8 +5,12 @@ import SearchResults from "@/components/SearchResults";
 import { getStoreProducts } from "@/lib/store-products";
 
 export const metadata: Metadata = {
-  title: "Søk | Sykkel Deler",
+  title: "Søk",
   description: "Søk etter sykkeldeler, merker og kategorier.",
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 type SearchPageProps = {
