@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import CategoryGrid from "@/components/CategoryGrid";
 import FeatureStrip from "@/components/FeatureStrip";
 import ProductGrid from "@/components/ProductGrid";
+import PartsShowcase from "@/components/PartsShowcase";
 import CampaignSection from "@/components/CampaignSection";
 import BrandStrip from "@/components/BrandStrip";
 import TeamSection from "@/components/TeamSection";
@@ -38,6 +39,7 @@ export default function Home() {
         <CategoryGrid />
         <FeatureStrip />
         <ProductGrid />
+        <PartsShowcase />
         <CampaignSection />
         <BrandStrip />
         <TeamSection />
