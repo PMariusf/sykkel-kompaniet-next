@@ -44,6 +44,14 @@ export default function Navbar() {
         </form>
 
         <a
+          href="/admin"
+          aria-label="Admin"
+          className="hidden rounded-md border border-white/10 px-3 py-2 text-[11px] font-black tracking-[.08em] text-zinc-400 transition hover:border-[#c9ff35]/40 hover:text-[#c9ff35] lg:inline-flex"
+        >
+          ADMIN
+        </a>
+
+        <a
           href="/konto"
           aria-label="Min konto"
           className="hidden h-10 w-10 items-center justify-center text-zinc-200 transition hover:text-[#c9ff35] md:flex"
@@ -106,6 +114,14 @@ export default function Navbar() {
                 className="flex items-center justify-between border-b border-white/[.07] py-3.5 transition hover:text-[#c9ff35]"
               >
                 Min konto
+                <span className="text-[#c9ff35]">→</span>
+              </a>
+              <a
+                href="/admin"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center justify-between border-b border-white/[.07] py-3.5 text-zinc-400 transition hover:text-[#c9ff35]"
+              >
+                Admin-innlogging
                 <span className="text-[#c9ff35]">→</span>
               </a>
               <a
