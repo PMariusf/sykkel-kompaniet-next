@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "@/lib/supabase-rest";
+import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL, supabaseHeaders } from "@/lib/supabase-rest";
 
 export async function POST(request: Request) {
   const cookieStore = await cookies();
@@ -10,6 +10,7 @@ export async function POST(request: Request) {
   const formData = await request.formData();
   const file = formData.get("file");
   const folder = String(formData.get("folder") ?? "general").replace(/[^a-z0-9-_]/gi, "-");
+  const altText = String(formData.get("altText") ?? "").trim() || null;
 
   if (!(file instanceof File) || file.size === 0) {
     return NextResponse.json({ error: "Velg et bilde." }, { status: 400 });
@@ -44,5 +45,13 @@ export async function POST(request: Request) {
   }
 
   const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/site-media/${fileName}`;
+
+  await fetch(`${SUPABASE_URL}/rest/v1/media_assets`, {
+    method: "POST",
+    headers: supabaseHeaders(accessToken),
+    body: JSON.stringify({ file_name: file.name, url: publicUrl, alt_text: altText, kind: folder }),
+    cache: "no-store",
+  });
+
   return NextResponse.json({ ok: true, path: fileName, url: publicUrl });
 }
