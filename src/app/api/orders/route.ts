@@ -2,14 +2,25 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { SUPABASE_URL, supabaseHeaders } from "@/lib/supabase-rest";
 
-function asNumber(value: unknown) {
-  const number = Number(value);
-  return Number.isFinite(number) && number >= 0 ? number : 0;
+type OrderItemInput = {
+  id?: unknown;
+  quantity?: unknown;
+};
+
+function text(value: unknown, maxLength: number) {
+  return String(value ?? "").trim().slice(0, maxLength);
+}
+
+function quantity(value: unknown) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return 1;
+  return Math.max(1, Math.min(20, Math.floor(parsed)));
 }
 
 export async function POST(request: Request) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("sykkel_customer_access")?.value;
+
   if (!accessToken) {
     return NextResponse.json({ error: "Du må være innlogget for å lagre demo-bestillingen." }, { status: 401 });
   }
@@ -18,50 +29,65 @@ export async function POST(request: Request) {
     headers: supabaseHeaders(accessToken),
     cache: "no-store",
   });
+
   if (!userResponse.ok) {
     return NextResponse.json({ error: "Kundeøkten er utløpt. Logg inn på nytt." }, { status: 401 });
   }
-  const user = await userResponse.json();
 
-  const body = await request.json();
-  const items = Array.isArray(body.items) ? body.items : [];
-  if (items.length === 0) {
-    return NextResponse.json({ error: "Handlekurven er tom." }, { status: 400 });
+  const body = await request.json().catch(() => null);
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Ugyldig bestilling." }, { status: 400 });
   }
 
-  const normalizedItems = items.map((item: any) => {
-    const rawId = String(item.id ?? "");
+  const rawItems: OrderItemInput[] = Array.isArray(body.items) ? body.items : [];
+  if (rawItems.length === 0) {
+    return NextResponse.json({ error: "Handlekurven er tom." }, { status: 400 });
+  }
+  if (rawItems.length > 50) {
+    return NextResponse.json({ error: "For mange ordrelinjer." }, { status: 400 });
+  }
+
+  const customerName = text(body.customer_name, 240);
+  const addressLine1 = text(body.address_line1, 300);
+  const postalCode = text(body.postal_code, 32);
+  const city = text(body.city, 120);
+
+  if (!customerName || !addressLine1 || !postalCode || !city) {
+    return NextResponse.json({ error: "Navn og leveringsadresse må fylles ut." }, { status: 400 });
+  }
+
+  const normalizedItems = rawItems.map((item) => {
+    const rawId = text(item.id, 80);
     const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(rawId);
-    const unitPrice = asNumber(item.unit_price_nok);
-    const quantity = Math.max(1, Math.floor(asNumber(item.quantity) || 1));
+    const legacyId = !isUuid && /^\d+$/.test(rawId) ? Number(rawId) : null;
+
     return {
       product_id: isUuid ? rawId : null,
-      legacy_id: isUuid ? null : Number.isFinite(Number(rawId)) ? Number(rawId) : null,
-      name: String(item.name ?? "Produkt").slice(0, 240),
-      brand: String(item.brand ?? "").slice(0, 120) || null,
-      sku: String(item.sku ?? "").slice(0, 120) || null,
-      unit_price_nok: unitPrice,
-      quantity,
-      line_total_nok: unitPrice * quantity,
-      image_url: String(item.image_url ?? "").slice(0, 1000) || null,
+      legacy_id: legacyId,
+      quantity: quantity(item.quantity),
     };
   });
 
-  const subtotal = normalizedItems.reduce((sum: number, item: any) => sum + item.line_total_nok, 0);
-  const shipping = body.shipping_method === "pickup_point" ? 79 : 99;
+  if (normalizedItems.some((item) => !item.product_id && item.legacy_id == null)) {
+    return NextResponse.json({ error: "Bestillingen inneholder et ugyldig produkt." }, { status: 400 });
+  }
+
   const payload = {
-    p_customer_email: String(user.email ?? body.email ?? "").trim(),
-    p_customer_name: String(body.customer_name ?? "").trim(),
-    p_customer_phone: String(body.customer_phone ?? "").trim(),
-    p_address_line1: String(body.address_line1 ?? "").trim(),
-    p_postal_code: String(body.postal_code ?? "").trim(),
-    p_city: String(body.city ?? "").trim(),
-    p_country: String(body.country ?? "Norge").trim() || "Norge",
+    p_customer_email: "",
+    p_customer_name: customerName,
+    p_customer_phone: text(body.customer_phone, 80),
+    p_address_line1: addressLine1,
+    p_postal_code: postalCode,
+    p_city: city,
+    p_country: text(body.country, 120) || "Norge",
     p_shipping_method: body.shipping_method === "pickup_point" ? "pickup_point" : "standard",
-    p_payment_method: ["vipps", "card", "klarna"].includes(body.payment_method) ? body.payment_method : "demo",
-    p_subtotal_nok: subtotal,
-    p_shipping_nok: shipping,
-    p_total_nok: subtotal + shipping,
+    p_payment_method: ["vipps", "card", "klarna"].includes(String(body.payment_method))
+      ? String(body.payment_method)
+      : "demo",
+    // Ignored by the hardened database function. Totals and product prices are calculated server-side.
+    p_subtotal_nok: 0,
+    p_shipping_nok: 0,
+    p_total_nok: 0,
     p_items: normalizedItems,
   };
 
@@ -71,6 +97,7 @@ export async function POST(request: Request) {
     body: JSON.stringify(payload),
     cache: "no-store",
   });
+
   const data = await response.json().catch(() => null);
   if (!response.ok) {
     return NextResponse.json({ error: data?.message ?? "Kunne ikke opprette demo-bestillingen." }, { status: response.status });
