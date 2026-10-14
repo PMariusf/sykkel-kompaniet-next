@@ -36,12 +36,12 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <BrandStrip />
         <CategoryGrid />
         <FeatureStrip />
         <ProductGrid />
         <PartsShowcase />
         <CampaignSection />
-        <BrandStrip />
         <TeamSection />
         <Newsletter />
       </main>
