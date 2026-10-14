@@ -79,7 +79,7 @@ export default function CheckoutClient() {
         <div className="mb-7 border-b border-white/10 pb-6">
           <p className="text-[10px] font-black tracking-[.32em] text-[#c9ff35]">CHECKOUT</p>
           <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Fullfør bestillingen</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-400">Demo-kassen lagrer ordren på kundekontoen, men kobler ikke til Vipps, kortinnløser eller Klarna.</p>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-400">Du kan handle som gjest uten å opprette konto. Demo-kassen kobler ikke til Vipps, kortinnløser eller Klarna.</p>
         </div>
 
         {completedOrder ? (
@@ -89,7 +89,7 @@ export default function CheckoutClient() {
             <p className="mt-3 text-sm text-zinc-400">Ordrenummer: <strong className="text-white">{completedOrder}</strong></p>
             <p className="mt-2 text-xs text-zinc-500">Ingen ekte betaling, kredittsjekk eller korttransaksjon er gjennomført.</p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
-              <Link href="/konto" className="rounded-md bg-[#c9ff35] px-5 py-3 text-sm font-black text-black">Se ordrehistorikk</Link>
+              <Link href="/konto" className="rounded-md bg-[#c9ff35] px-5 py-3 text-sm font-black text-black">Min konto</Link>
               <Link href="/" className="rounded-md border border-white/10 px-5 py-3 text-sm font-bold text-white">Til forsiden</Link>
             </div>
           </section>
@@ -104,6 +104,7 @@ export default function CheckoutClient() {
             <div className="space-y-5">
               <section className="rounded-lg border border-white/10 bg-[#0b0f10] p-5 sm:p-6">
                 <div className="flex items-center gap-3"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#c9ff35] text-xs font-black text-black">1</span><h2 className="text-lg font-black">Kontaktinformasjon</h2></div>
+                <p className="mt-2 text-xs text-zinc-500">Konto er valgfritt. E-post brukes som kontaktinformasjon på bestillingen.</p>
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   <input name="first_name" required maxLength={120} className={inputClass} type="text" placeholder="Fornavn" autoComplete="given-name" />
                   <input name="last_name" required maxLength={120} className={inputClass} type="text" placeholder="Etternavn" autoComplete="family-name" />
@@ -166,9 +167,9 @@ export default function CheckoutClient() {
               </div>
               <div className="mt-5 space-y-3 text-sm"><div className="flex justify-between text-zinc-400"><span>Delsum</span><span className="font-bold text-white">{formatPrice(subtotal)}</span></div><div className="flex justify-between text-zinc-400"><span>Frakt</span><span className="font-bold text-white">{formatPrice(shipping)}</span></div></div>
               <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-5"><span className="font-black">Totalt</span><span className="text-2xl font-black">{formatPrice(total)}</span></div>
-              {message && <div className="mt-4 rounded-md border border-amber-400/20 bg-amber-400/[.05] px-3 py-3 text-xs leading-5 text-amber-100">{message}{message.includes("innlogget") && <Link href="/konto" className="ml-1 font-black text-[#c9ff35]">Logg inn her →</Link>}</div>}
+              {message && <div className="mt-4 rounded-md border border-amber-400/20 bg-amber-400/[.05] px-3 py-3 text-xs leading-5 text-amber-100">{message}</div>}
               <button disabled={loading} type="submit" className="mt-5 w-full rounded-md bg-[#c9ff35] px-5 py-3.5 text-sm font-black text-black transition hover:bg-[#d8ff68] disabled:cursor-not-allowed disabled:opacity-50">{loading ? "Simulerer betaling..." : paymentButtonLabel}</button>
-              <p className="mt-3 text-center text-[10px] leading-4 text-zinc-500">Ingen betalingsleverandør kalles. Ordren lagres med betalingsstatus «demo».</p>
+              <p className="mt-3 text-center text-[10px] leading-4 text-zinc-500">Innlogging er ikke nødvendig. Ingen betalingsleverandør kalles, og ordren lagres med betalingsstatus «demo».</p>
               <Link href="/handlekurv" className="mt-5 block text-center text-xs font-bold text-[#c9ff35]">← Tilbake til handlekurven</Link>
             </aside>
           </form>
