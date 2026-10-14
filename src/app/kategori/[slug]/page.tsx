@@ -15,8 +15,19 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const category = getCategory(slug);
-  if (!category) return { title: "Kategori ikke funnet | Sykkel Deler" };
-  return { title: `${category.name} | Sykkel Deler`, description: category.description };
+  if (!category) return { title: "Kategori ikke funnet" };
+
+  return {
+    title: category.name,
+    description: category.description,
+    alternates: { canonical: `/kategori/${category.slug}` },
+    openGraph: {
+      title: category.name,
+      description: category.description,
+      url: `/kategori/${category.slug}`,
+      images: [{ url: category.image }],
+    },
+  };
 }
 
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
