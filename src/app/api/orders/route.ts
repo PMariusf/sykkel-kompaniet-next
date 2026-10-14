@@ -11,7 +11,7 @@ type OrderItemInput = {
   quantity?: unknown;
 };
 
-type RefreshSession = {
+type AuthSession = {
   access_token?: string;
   refresh_token?: string;
   expires_in?: number;
@@ -27,7 +27,7 @@ function quantity(value: unknown) {
   return Math.max(1, Math.min(20, Math.floor(parsed)));
 }
 
-async function refreshCustomerSession(refreshToken: string): Promise<RefreshSession | null> {
+async function refreshCustomerSession(refreshToken: string): Promise<AuthSession | null> {
   const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
     method: "POST",
     headers: {
@@ -42,43 +42,98 @@ async function refreshCustomerSession(refreshToken: string): Promise<RefreshSess
   return response.json();
 }
 
+async function createGuestSession(): Promise<AuthSession | null> {
+  const response = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_PUBLISHABLE_KEY,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({}),
+    cache: "no-store",
+  });
+
+  if (!response.ok) return null;
+  const data = await response.json().catch(() => null);
+  return data?.access_token ? data : null;
+}
+
+async function isValidAccessToken(accessToken?: string) {
+  if (!accessToken) return false;
+  const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+    headers: supabaseHeaders(accessToken),
+    cache: "no-store",
+  });
+  return response.ok;
+}
+
+function setCustomerSessionCookies(response: NextResponse, session: AuthSession) {
+  if (!session.access_token) return;
+
+  const secure = process.env.NODE_ENV === "production";
+  response.cookies.set("sykkel_customer_access", session.access_token, {
+    httpOnly: true,
+    secure,
+    sameSite: "lax",
+    path: "/",
+    maxAge: session.expires_in ?? 3600,
+  });
+
+  if (session.refresh_token) {
+    response.cookies.set("sykkel_customer_refresh", session.refresh_token, {
+      httpOnly: true,
+      secure,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+  }
+}
+
 export async function POST(request: Request) {
+  const body = await request.json().catch(() => null);
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Ugyldig bestilling." }, { status: 400 });
+  }
+
   const cookieStore = await cookies();
   let accessToken = cookieStore.get("sykkel_customer_access")?.value;
   const refreshToken = cookieStore.get("sykkel_customer_refresh")?.value;
-  let refreshedSession: RefreshSession | null = null;
+  let replacementSession: AuthSession | null = null;
 
-  let userResponse = accessToken
-    ? await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-        headers: supabaseHeaders(accessToken),
-        cache: "no-store",
-      })
-    : null;
+  let validSession = await isValidAccessToken(accessToken);
 
-  if ((!accessToken || !userResponse?.ok) && refreshToken) {
-    refreshedSession = await refreshCustomerSession(refreshToken);
-    if (refreshedSession?.access_token) {
-      accessToken = refreshedSession.access_token;
-      userResponse = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-        headers: supabaseHeaders(accessToken),
-        cache: "no-store",
-      });
+  if (!validSession && refreshToken) {
+    replacementSession = await refreshCustomerSession(refreshToken);
+    if (replacementSession?.access_token) {
+      accessToken = replacementSession.access_token;
+      validSession = await isValidAccessToken(accessToken);
     }
   }
 
-  if (!accessToken || !userResponse?.ok) {
+  // Guest checkout: if no permanent customer session is available, create a
+  // temporary anonymous Supabase user. Anonymous users still use the
+  // authenticated Postgres role, so the existing RLS policies continue to
+  // protect each customer's order data.
+  if (!validSession) {
+    replacementSession = await createGuestSession();
+    if (replacementSession?.access_token) {
+      accessToken = replacementSession.access_token;
+      validSession = await isValidAccessToken(accessToken);
+    }
+  }
+
+  if (!accessToken || !validSession) {
     const response = NextResponse.json(
-      { error: "Kundeøkten er utløpt. Logg inn på nytt før du fullfører bestillingen." },
-      { status: 401 },
+      {
+        error:
+          "Gjestekjøp kunne ikke startes. Kontroller at Anonymous Sign-Ins er aktivert i Supabase Auth.",
+      },
+      { status: 503 },
     );
     response.cookies.delete("sykkel_customer_access");
     response.cookies.delete("sykkel_customer_refresh");
     return response;
-  }
-
-  const body = await request.json().catch(() => null);
-  if (!body || typeof body !== "object") {
-    return NextResponse.json({ error: "Ugyldig bestilling." }, { status: 400 });
   }
 
   const rawItems: OrderItemInput[] = Array.isArray(body.items) ? body.items : [];
@@ -90,12 +145,16 @@ export async function POST(request: Request) {
   }
 
   const customerName = text(body.customer_name, 240);
+  const customerEmail = text(body.email, 320);
   const addressLine1 = text(body.address_line1, 300);
   const postalCode = text(body.postal_code, 32);
   const city = text(body.city, 120);
 
-  if (!customerName || !addressLine1 || !postalCode || !city) {
-    return NextResponse.json({ error: "Navn og leveringsadresse må fylles ut." }, { status: 400 });
+  if (!customerName || !customerEmail || !addressLine1 || !postalCode || !city) {
+    return NextResponse.json(
+      { error: "Navn, e-post og leveringsadresse må fylles ut." },
+      { status: 400 },
+    );
   }
 
   const normalizedItems = rawItems.map((item) => {
@@ -115,7 +174,7 @@ export async function POST(request: Request) {
   }
 
   const payload = {
-    p_customer_email: "",
+    p_customer_email: customerEmail,
     p_customer_name: customerName,
     p_customer_phone: text(body.customer_phone, 80),
     p_address_line1: addressLine1,
@@ -150,25 +209,8 @@ export async function POST(request: Request) {
   const order = Array.isArray(data) ? data[0] : data;
   const response = NextResponse.json({ ok: true, order });
 
-  if (refreshedSession?.access_token) {
-    const secure = process.env.NODE_ENV === "production";
-    response.cookies.set("sykkel_customer_access", refreshedSession.access_token, {
-      httpOnly: true,
-      secure,
-      sameSite: "lax",
-      path: "/",
-      maxAge: refreshedSession.expires_in ?? 3600,
-    });
-
-    if (refreshedSession.refresh_token) {
-      response.cookies.set("sykkel_customer_refresh", refreshedSession.refresh_token, {
-        httpOnly: true,
-        secure,
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60 * 24 * 30,
-      });
-    }
+  if (replacementSession) {
+    setCustomerSessionCookies(response, replacementSession);
   }
 
   return response;
