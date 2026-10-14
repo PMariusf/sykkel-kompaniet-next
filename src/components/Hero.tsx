@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { SUPABASE_URL, supabaseHeaders } from "@/lib/supabase-rest";
 
 const trustItems = [
   ["▣", "Rask levering", "1–3 virkedager"],
@@ -7,12 +8,52 @@ const trustItems = [
   ["☆", "Eksperthjelp", "Vi hjelper deg å velge"],
 ];
 
-export default function Hero() {
+type HeroContent = {
+  eyebrow: string | null;
+  headline: string | null;
+  subheadline: string | null;
+  primary_cta_label: string | null;
+  primary_cta_href: string | null;
+  secondary_cta_label: string | null;
+  secondary_cta_href: string | null;
+  image_url: string | null;
+  image_alt: string | null;
+};
+
+const fallback: HeroContent = {
+  eyebrow: "KVALITET GIR BEDRE TURER",
+  headline: "Deler til sykkelen din",
+  subheadline: "Kvalitetsdeler for vei, terreng og hverdagssykling. Stort utvalg fra ledende merkevarer.",
+  primary_cta_label: "Se sykkeldeler",
+  primary_cta_href: "#produkter",
+  secondary_cta_label: "Finn riktig del",
+  secondary_cta_href: "#kategorier",
+  image_url: "/products/hero-image.png",
+  image_alt: "Sykkeldeler og drivverk",
+};
+
+async function getHeroContent(): Promise<HeroContent> {
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/site_content?select=eyebrow,headline,subheadline,primary_cta_label,primary_cta_href,secondary_cta_label,secondary_cta_href,image_url,image_alt&key=eq.home_hero`,
+      { headers: supabaseHeaders(), cache: "no-store" },
+    );
+    if (!response.ok) return fallback;
+    const rows: HeroContent[] = await response.json();
+    return rows[0] ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+export default async function Hero() {
+  const content = await getHeroContent();
+
   return (
     <section className="relative isolate overflow-hidden border-b border-white/10 bg-black">
       <Image
-        src="/products/hero-image.png"
-        alt="Sykkeldeler og drivverk"
+        src={content.image_url || fallback.image_url!}
+        alt={content.image_alt || fallback.image_alt!}
         fill
         priority
         sizes="100vw"
@@ -24,32 +65,25 @@ export default function Hero() {
       <div className="absolute inset-x-0 bottom-0 -z-10 h-28 bg-gradient-to-t from-[#06090a]/95 to-transparent" />
 
       <div className="mx-auto flex min-h-[470px] max-w-[1420px] items-center px-4 pb-10 pt-12 sm:min-h-[520px] sm:px-6 sm:pt-16 lg:px-8 lg:pb-28">
-        <div className="max-w-[620px]">
+        <div className="max-w-[650px]">
           <p className="mb-3 text-[10px] font-black tracking-[.28em] text-[#c9ff35] drop-shadow-[0_2px_8px_rgba(0,0,0,.45)] sm:text-xs sm:tracking-[.34em]">
-            KVALITET GIR BEDRE TURER
+            {content.eyebrow || fallback.eyebrow}
           </p>
 
-          <h1 className="text-[2.75rem] font-black leading-[.9] tracking-[-.055em] min-[390px]:text-[3.15rem] sm:text-6xl lg:text-[4.7rem]">
-            <span className="bg-[linear-gradient(180deg,#ffffff_0%,#dcdcdc_38%,#8d8d8d_73%,#f4f4f4_100%)] bg-clip-text text-transparent drop-shadow-[0_4px_18px_rgba(0,0,0,.65)]">
-              Deler til
-            </span>
-            <br />
-            <span className="bg-[linear-gradient(180deg,#f4f4f4_0%,#cfcfcf_42%,#777777_78%,#d7d7d7_100%)] bg-clip-text text-transparent drop-shadow-[0_4px_18px_rgba(0,0,0,.65)]">
-              sykkelen din
-            </span>
+          <h1 className="max-w-[640px] bg-[linear-gradient(180deg,#ffffff_0%,#dcdcdc_38%,#8d8d8d_73%,#f4f4f4_100%)] bg-clip-text text-[2.75rem] font-black leading-[.9] tracking-[-.055em] text-transparent drop-shadow-[0_4px_18px_rgba(0,0,0,.65)] min-[390px]:text-[3.15rem] sm:text-6xl lg:text-[4.7rem]">
+            {content.headline || fallback.headline}
           </h1>
 
-          <p className="mt-5 max-w-[520px] text-[15px] leading-6 text-zinc-200 sm:text-lg">
-            Kvalitetsdeler for vei, terreng og hverdagssykling.
-            <br className="hidden sm:block" /> Stort utvalg fra ledende merkevarer.
+          <p className="mt-5 max-w-[540px] text-[15px] leading-6 text-zinc-200 sm:text-lg">
+            {content.subheadline || fallback.subheadline}
           </p>
 
           <div className="mt-6 flex flex-col gap-2.5 min-[430px]:flex-row min-[430px]:flex-wrap sm:gap-3">
-            <a href="#produkter" className="rounded-md bg-[#c9ff35] px-6 py-3 text-center text-sm font-black text-black shadow-[0_0_24px_rgba(201,255,53,.16)] transition hover:bg-[#d8ff68]">
-              Se sykkeldeler <span className="ml-2">→</span>
+            <a href={content.primary_cta_href || fallback.primary_cta_href!} className="rounded-md bg-[#c9ff35] px-6 py-3 text-center text-sm font-black text-black shadow-[0_0_24px_rgba(201,255,53,.16)] transition hover:bg-[#d8ff68]">
+              {content.primary_cta_label || fallback.primary_cta_label} <span className="ml-2">→</span>
             </a>
-            <a href="#kategorier" className="rounded-md border border-white/35 bg-black/30 px-6 py-3 text-center text-sm font-bold text-white backdrop-blur-sm transition hover:bg-black/45">
-              ⌕ <span className="ml-2">Finn riktig del</span>
+            <a href={content.secondary_cta_href || fallback.secondary_cta_href!} className="rounded-md border border-white/35 bg-black/30 px-6 py-3 text-center text-sm font-bold text-white backdrop-blur-sm transition hover:bg-black/45">
+              ⌕ <span className="ml-2">{content.secondary_cta_label || fallback.secondary_cta_label}</span>
             </a>
           </div>
         </div>
