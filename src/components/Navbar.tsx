@@ -43,12 +43,16 @@ export default function Navbar() {
           />
         </form>
 
-        <button aria-label="Konto" className="hidden h-10 w-10 items-center justify-center text-zinc-200 md:flex">
+        <a
+          href="/konto"
+          aria-label="Min konto"
+          className="hidden h-10 w-10 items-center justify-center text-zinc-200 transition hover:text-[#c9ff35] md:flex"
+        >
           <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current" strokeWidth="1.7">
             <circle cx="12" cy="8" r="3.5" />
             <path d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6" />
           </svg>
-        </button>
+        </a>
 
         <CartLink />
 
@@ -96,6 +100,14 @@ export default function Navbar() {
                   <span className="text-[#c9ff35]">→</span>
                 </a>
               ))}
+              <a
+                href="/konto"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center justify-between border-b border-white/[.07] py-3.5 transition hover:text-[#c9ff35]"
+              >
+                Min konto
+                <span className="text-[#c9ff35]">→</span>
+              </a>
               <a
                 href="/handlekurv"
                 onClick={() => setMenuOpen(false)}
