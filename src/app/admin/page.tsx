@@ -24,6 +24,9 @@ type Product = {
   sku: string | null;
   ean: string | null;
   price_nok: number | null;
+  compare_at_price_nok: number | null;
+  badge: string | null;
+  is_featured: boolean;
   category_id: string | null;
   supplier: string | null;
   description: string | null;
@@ -32,6 +35,9 @@ type Product = {
   stock_quantity: number | null;
   stock_status: string;
   warehouse_location: string;
+  seo_title: string | null;
+  seo_description: string | null;
+  og_image_url: string | null;
   is_published: boolean;
   category: { name: string } | null;
   images: ProductImage[];
@@ -52,7 +58,7 @@ export default async function AdminPage() {
       headers: supabaseHeaders(accessToken),
       cache: "no-store",
     }),
-    fetch(`${SUPABASE_URL}/rest/v1/products?select=id,name,brand,sku,ean,price_nok,category_id,supplier,description,compatibility,image_path,stock_quantity,stock_status,warehouse_location,is_published,category:categories(name),images:product_images(id,image_url,alt_text,sort_order,is_primary)&order=created_at.desc`, {
+    fetch(`${SUPABASE_URL}/rest/v1/products?select=id,name,brand,sku,ean,price_nok,compare_at_price_nok,badge,is_featured,category_id,supplier,description,compatibility,image_path,stock_quantity,stock_status,warehouse_location,seo_title,seo_description,og_image_url,is_published,category:categories(name),images:product_images(id,image_url,alt_text,sort_order,is_primary)&order=created_at.desc`, {
       headers: supabaseHeaders(accessToken),
       cache: "no-store",
     }),
@@ -136,10 +142,12 @@ export default async function AdminPage() {
                         <div className="flex flex-wrap items-center gap-2">
                           <h3 className="font-black text-white">{product.name}</h3>
                           <span className={`rounded-full px-2 py-1 text-[9px] font-black ${product.is_published ? "bg-[#c9ff35]/15 text-[#c9ff35]" : "bg-white/5 text-zinc-500"}`}>{product.is_published ? "PUBLISERT" : "UTKAST"}</span>
+                          {product.badge && <span className="rounded-full bg-[#c9ff35] px-2 py-1 text-[9px] font-black uppercase text-black">{product.badge}</span>}
+                          {product.is_featured && <span className="rounded-full bg-white/5 px-2 py-1 text-[9px] font-black text-zinc-300">UTVALGT</span>}
                           {product.images?.length > 0 && <span className="rounded-full bg-white/5 px-2 py-1 text-[9px] font-black text-zinc-400">{product.images.length} BILDER</span>}
                         </div>
                         <p className="mt-1 text-xs text-zinc-500">{[product.brand, product.category?.name, product.sku ? `SKU ${product.sku}` : null].filter(Boolean).join(" · ") || "Produktdata mangler"}</p>
-                        <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs"><span className="font-black text-white">{formatPrice(product.price_nok)}</span><span className="text-zinc-400">Lager: {product.stock_quantity ?? "ukjent"}</span><span className="text-zinc-400">{product.warehouse_location}</span></div>
+                        <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs"><span className="font-black text-white">{formatPrice(product.price_nok)}</span>{product.compare_at_price_nok != null && <span className="text-zinc-500 line-through">{formatPrice(product.compare_at_price_nok)}</span>}<span className="text-zinc-400">Lager: {product.stock_quantity ?? "ukjent"}</span><span className="text-zinc-400">{product.warehouse_location}</span></div>
                       </div>
                       <div className="flex flex-wrap gap-2"><AdminProductActions id={product.id} published={product.is_published} /></div>
                     </div>
