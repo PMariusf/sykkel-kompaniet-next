@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AddToCartButton from "@/components/AddToCartButton";
 import { getStoreProduct, getStoreProducts } from "@/lib/store-products";
+import { SITE_URL } from "@/lib/site";
 
 type ProductPageProps = {
   params: Promise<{ id: string }>;
@@ -15,18 +16,28 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const { id } = await params;
   const product = await getStoreProduct(id);
 
-  if (!product) return { title: "Produkt ikke funnet | Sykkel Deler" };
+  if (!product) return { title: "Produkt ikke funnet" };
 
-  const title = product.seoTitle || `${product.name} | Sykkel Deler`;
+  const title = product.seoTitle || product.name;
   const description = product.seoDescription || `${product.brand} ${product.name} – ${product.category}.`;
+  const canonical = `/produkter/${product.id}`;
 
   return {
     title,
     description,
+    alternates: { canonical },
     openGraph: {
+      type: "website",
       title,
       description,
+      url: canonical,
       images: product.ogImage || product.image ? [{ url: product.ogImage || product.image }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: product.ogImage || product.image ? [product.ogImage || product.image] : undefined,
     },
   };
 }
@@ -39,6 +50,18 @@ function stockText(status?: string, quantity?: number) {
   return "Lagerstatus kommer";
 }
 
+function schemaAvailability(status?: string) {
+  if (status === "in_stock" || status === "low_stock") return "https://schema.org/InStock";
+  if (status === "out_of_stock") return "https://schema.org/OutOfStock";
+  if (status === "backorder") return "https://schema.org/BackOrder";
+  return undefined;
+}
+
+function numericPrice(price: string) {
+  const parsed = Number(price.replace(/[^0-9,.-]/g, "").replace(",", "."));
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
 export default async function ProductPage({ params }: ProductPageProps) {
   const { id } = await params;
   const [product, allProducts] = await Promise.all([getStoreProduct(id), getStoreProducts()]);
@@ -48,11 +71,37 @@ export default async function ProductPage({ params }: ProductPageProps) {
     .filter((item) => item.category === product.category && item.id !== product.id)
     .slice(0, 3);
   const warehouse = product.warehouseLocation ?? "Arna";
+  const productUrl = `${SITE_URL}/produkter/${product.id}`;
+  const price = numericPrice(product.price);
+
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description || product.seoDescription || undefined,
+    image: product.image ? [product.image.startsWith("http") ? product.image : `${SITE_URL}${product.image}`] : undefined,
+    sku: product.sku || undefined,
+    gtin13: product.ean?.replace(/\s/g, "").length === 13 ? product.ean.replace(/\s/g, "") : undefined,
+    category: product.category,
+    brand: product.brand ? { "@type": "Brand", name: product.brand } : undefined,
+    offers: price != null ? {
+      "@type": "Offer",
+      url: productUrl,
+      priceCurrency: "NOK",
+      price,
+      availability: schemaAvailability(product.stockStatus),
+      itemCondition: "https://schema.org/NewCondition",
+    } : undefined,
+  };
 
   return (
     <>
       <Navbar />
       <main className="min-h-screen bg-[#070b0c] text-white">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema).replace(/</g, "\\u003c") }}
+        />
         <div className="mx-auto max-w-[1420px] px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
           <nav className="mb-6 flex flex-wrap items-center gap-2 text-[11px] text-zinc-500">
             <Link href="/" className="transition hover:text-white">Hjem</Link><span>/</span>
