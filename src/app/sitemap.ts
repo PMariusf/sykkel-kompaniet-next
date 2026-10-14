@@ -10,7 +10,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: SITE_URL, lastModified: now, changeFrequency: "daily", priority: 1 },
     { url: `${SITE_URL}/kategorier`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${SITE_URL}/sok`, lastModified: now, changeFrequency: "weekly", priority: 0.5 },
   ];
 
   const categoryRoutes: MetadataRoute.Sitemap = categories.map((category) => ({
