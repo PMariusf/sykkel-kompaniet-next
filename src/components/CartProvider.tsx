@@ -10,8 +10,8 @@ type CartContextValue = {
   itemCount: number;
   subtotal: number;
   addItem: (product: Product) => void;
-  removeItem: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  removeItem: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
 };
 
@@ -28,7 +28,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const saved = window.localStorage.getItem("sykkel-deler-cart");
     if (saved) {
       try {
-        setItems(JSON.parse(saved));
+        const parsed = JSON.parse(saved) as CartItem[];
+        setItems(parsed.map((item) => ({ ...item, id: String(item.id) })));
       } catch {
         window.localStorage.removeItem("sykkel-deler-cart");
       }
@@ -52,11 +53,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       });
     };
 
-    const removeItem = (id: number) => {
+    const removeItem = (id: string) => {
       setItems((current) => current.filter((item) => item.id !== id));
     };
 
-    const updateQuantity = (id: number, quantity: number) => {
+    const updateQuantity = (id: string, quantity: number) => {
       if (quantity <= 0) {
         removeItem(id);
         return;
