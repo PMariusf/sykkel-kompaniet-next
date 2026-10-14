@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import Link from "next/link";
 import AdminLogin from "./AdminLogin";
 import AdminProductForm from "./AdminProductForm";
 import AdminProductActions from "./AdminProductActions";
@@ -55,16 +56,24 @@ export default async function AdminPage() {
   return (
     <main className="min-h-screen bg-[#070b0c] text-white">
       <div className="border-b border-white/10 bg-[#0b0f10]">
-        <div className="mx-auto flex max-w-[1420px] items-center justify-between gap-4 px-4 py-5 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-[1420px] flex-wrap items-center justify-between gap-4 px-4 py-5 sm:px-6 lg:px-8">
           <div>
             <p className="text-[10px] font-black tracking-[.32em] text-[#c9ff35]">SYKKEL DELER CMS</p>
-            <h1 className="mt-1 text-2xl font-black tracking-tight">Adminpanel</h1>
+            <h1 className="mt-1 text-2xl font-black tracking-tight">Produkter og lager</h1>
           </div>
-          <form action="/api/admin/logout" method="post">
-            <button className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold text-zinc-300 hover:border-white/25 hover:text-white">
-              Logg ut
-            </button>
-          </form>
+          <div className="flex flex-wrap items-center gap-2">
+            <Link href="/admin/innhold" className="rounded-md bg-[#c9ff35] px-4 py-2 text-xs font-black text-black transition hover:bg-[#d8ff68]">
+              Innhold & media
+            </Link>
+            <Link href="/" className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold text-zinc-300 hover:border-white/25 hover:text-white">
+              Se nettsiden
+            </Link>
+            <form action="/api/admin/logout" method="post">
+              <button className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold text-zinc-300 hover:border-white/25 hover:text-white">
+                Logg ut
+              </button>
+            </form>
+          </div>
         </div>
       </div>
 
