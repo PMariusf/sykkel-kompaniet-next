@@ -103,31 +103,31 @@ export default async function ProductPage({ params }: ProductPageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema).replace(/</g, "\\u003c") }}
         />
         <div className="mx-auto max-w-[1420px] px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
-          <nav className="mb-6 flex flex-wrap items-center gap-2 text-[11px] text-zinc-500">
-            <Link href="/" className="transition hover:text-white">Hjem</Link><span>/</span>
-            <Link href="/#produkter" className="transition hover:text-white">Produkter</Link><span>/</span>
-            <span className="text-zinc-300">{product.name}</span>
+          <nav aria-label="Brødsmuler" className="mb-6 flex flex-wrap items-center gap-2 text-xs text-zinc-300">
+            <Link href="/" className="transition hover:text-white">Hjem</Link><span aria-hidden="true">/</span>
+            <Link href="/#produkter" className="transition hover:text-white">Produkter</Link><span aria-hidden="true">/</span>
+            <span aria-current="page" className="text-zinc-100">{product.name}</span>
           </nav>
 
           <section className="grid gap-7 lg:grid-cols-[1.08fr_.92fr] lg:gap-12">
             <div className="relative min-h-[380px] overflow-hidden rounded-lg border border-white/10 bg-[radial-gradient(circle_at_50%_42%,#252c2d,#090b0c_72%)] sm:min-h-[520px]">
               <Image src={product.image} alt={product.name} fill priority sizes="(max-width: 1024px) 100vw, 55vw" className="object-contain p-8 sm:p-14" />
-              {product.badge && <span className="absolute left-4 top-4 rounded-full bg-[#c9ff35] px-3 py-1.5 text-[10px] font-black uppercase tracking-[.12em] text-black">{product.badge}</span>}
-              <span className="absolute bottom-4 left-4 rounded-full border border-white/15 bg-black/45 px-3 py-1.5 text-[10px] font-black tracking-[.12em] text-zinc-200 backdrop-blur-sm">LAGER I {warehouse.toUpperCase()}</span>
+              {product.badge && <span className="absolute left-4 top-4 rounded-full bg-[#c9ff35] px-3 py-1.5 text-xs font-black uppercase tracking-[.1em] text-black">{product.badge}</span>}
+              <span className="absolute bottom-4 left-4 rounded-full border border-white/15 bg-black/60 px-3 py-1.5 text-xs font-black tracking-[.1em] text-white backdrop-blur-sm">LAGER I {warehouse.toUpperCase()}</span>
             </div>
 
             <div className="flex flex-col justify-center">
-              <p className="text-[10px] font-black tracking-[.32em] text-[#c9ff35]">{product.brand.toUpperCase()}</p>
+              <p className="text-xs font-black tracking-[.24em] text-[#c9ff35]">{product.brand.toUpperCase()}</p>
               <h1 className="mt-3 max-w-2xl text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">{product.name}</h1>
-              <p className="mt-3 text-sm font-semibold text-zinc-400">Kategori: {product.category}</p>
+              <p className="mt-3 text-sm font-semibold text-zinc-300">Kategori: {product.category}</p>
 
               <div className="mt-6 flex flex-wrap items-baseline gap-3">
                 <p className="text-3xl font-black text-white sm:text-4xl">{product.price}</p>
-                {product.compareAtPrice && <p className="text-lg font-bold text-zinc-500 line-through">{product.compareAtPrice}</p>}
+                {product.compareAtPrice && <p className="text-lg font-bold text-zinc-400 line-through">{product.compareAtPrice}</p>}
               </div>
-              <p className="mt-2 text-sm font-bold text-zinc-400">{stockText(product.stockStatus, product.stockQuantity)}</p>
+              <p className="mt-2 text-sm font-bold text-zinc-300">{stockText(product.stockStatus, product.stockQuantity)}</p>
 
-              <div className="mt-7 border-y border-white/10 py-5 text-sm leading-7 text-zinc-300">
+              <div className="mt-7 border-y border-white/10 py-5 text-sm leading-7 text-zinc-200">
                 <p>{product.description || "Produktbeskrivelse kommer når leverandørdata er lagt inn."}</p>
               </div>
 
@@ -138,7 +138,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
               <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-3">
                 {[["Lager", stockText(product.stockStatus, product.stockQuantity)], ["Trygg handel", "Sikre betalingsløsninger"], ["Hjelp til valg", "Vi hjelper deg"]].map(([title, text]) => (
-                  <div key={title} className="rounded-md border border-white/10 bg-white/[.025] p-3"><p className="text-xs font-black text-white">{title}</p><p className="mt-1 text-[10px] text-zinc-500">{text}</p></div>
+                  <div key={title} className="rounded-md border border-white/10 bg-white/[.025] p-3"><p className="text-xs font-black text-white">{title}</p><p className="mt-1 text-xs leading-5 text-zinc-300">{text}</p></div>
                 ))}
               </div>
             </div>
@@ -147,7 +147,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <section className="mt-10 grid gap-4 border-t border-white/10 pt-8 md:grid-cols-3">
             <div className="rounded-md border border-white/10 bg-[#0b0f10] p-5">
               <h2 className="text-sm font-black text-white">Produktinformasjon</h2>
-              <dl className="mt-3 space-y-2 text-xs text-zinc-400">
+              <dl className="mt-3 space-y-2 text-xs text-zinc-300">
                 <div className="flex justify-between gap-4"><dt>SKU</dt><dd>{product.sku ?? "Kommer"}</dd></div>
                 <div className="flex justify-between gap-4"><dt>EAN</dt><dd>{product.ean ?? "Kommer"}</dd></div>
                 <div className="flex justify-between gap-4"><dt>Leverandør</dt><dd>{product.supplier ?? "Kommer"}</dd></div>
@@ -155,23 +155,23 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
             <div className="rounded-md border border-white/10 bg-[#0b0f10] p-5">
               <h2 className="text-sm font-black text-white">Kompatibilitet</h2>
-              <p className="mt-3 text-xs leading-6 text-zinc-400">{product.compatibility?.length ? product.compatibility.join(", ") : "Kompatibilitetsdata kommer fra leverandør."}</p>
+              <p className="mt-3 text-xs leading-6 text-zinc-300">{product.compatibility?.length ? product.compatibility.join(", ") : "Kompatibilitetsdata kommer fra leverandør."}</p>
             </div>
             <div className="rounded-md border border-white/10 bg-[#0b0f10] p-5">
               <h2 className="text-sm font-black text-white">Lager & levering</h2>
-              <p className="mt-3 text-xs leading-6 text-zinc-400">Lagerlokasjon: {warehouse}. {stockText(product.stockStatus, product.stockQuantity)}.</p>
+              <p className="mt-3 text-xs leading-6 text-zinc-300">Lagerlokasjon: {warehouse}. {stockText(product.stockStatus, product.stockQuantity)}.</p>
             </div>
           </section>
 
           {relatedProducts.length > 0 && (
             <section className="mt-10 border-t border-white/10 pt-8">
-              <p className="text-[10px] font-black tracking-[.32em] text-[#c9ff35]">RELATERTE PRODUKTER</p>
+              <p className="text-xs font-black tracking-[.24em] text-[#c9ff35]">RELATERTE PRODUKTER</p>
               <h2 className="mt-2 text-2xl font-black text-white">Andre deler i {product.category}</h2>
               <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3">
                 {relatedProducts.map((item) => (
                   <Link key={item.id} href={`/produkter/${item.id}`} className="group overflow-hidden rounded-md border border-white/10 bg-[#0b0f10] transition hover:border-[#c9ff35]/40">
                     <div className="relative aspect-[1.25/1] bg-[radial-gradient(circle_at_50%_40%,#202627,#090b0c_72%)]"><Image src={item.image} alt={item.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-contain p-5 transition group-hover:scale-[1.03]" /></div>
-                    <div className="p-3"><p className="text-[9px] font-black tracking-[.14em] text-zinc-500">{item.brand.toUpperCase()}</p><p className="mt-1 text-sm font-bold text-white">{item.name}</p><div className="mt-2 flex items-baseline gap-2"><p className="font-black text-white">{item.price}</p>{item.compareAtPrice && <p className="text-[10px] text-zinc-500 line-through">{item.compareAtPrice}</p>}</div></div>
+                    <div className="p-3"><p className="text-xs font-black tracking-[.1em] text-zinc-300">{item.brand.toUpperCase()}</p><p className="mt-1 text-sm font-bold text-white">{item.name}</p><div className="mt-2 flex items-baseline gap-2"><p className="font-black text-white">{item.price}</p>{item.compareAtPrice && <p className="text-xs text-zinc-400 line-through">{item.compareAtPrice}</p>}</div></div>
                   </Link>
                 ))}
               </div>
