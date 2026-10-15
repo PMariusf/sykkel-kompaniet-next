@@ -58,7 +58,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema).replace(/</g, "\\u003c") }}
         />
-        <CartProvider>{children}</CartProvider>
+        <div id="main-content" tabIndex={-1}>
+          <CartProvider>{children}</CartProvider>
+        </div>
       </body>
     </html>
   );
