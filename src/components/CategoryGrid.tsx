@@ -17,7 +17,7 @@ export default function CategoryGrid() {
       <div className="mx-auto max-w-[1420px] px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-[10px] font-black tracking-[.34em] text-[#c9ff35]">KATEGORIER</p>
+            <p className="text-xs font-black tracking-[.28em] text-[#c9ff35]">KATEGORIER</p>
             <h2 className="mt-1.5 text-[1.7rem] font-black tracking-tight text-white sm:text-3xl">Finn deler etter kategori</h2>
           </div>
           <Link href="/kategorier" className="hidden text-xs font-bold text-[#c9ff35] sm:block">Se alle kategorier →</Link>
@@ -40,8 +40,8 @@ export default function CategoryGrid() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 p-3">
-                <strong className="text-[13px] font-black leading-4 text-white sm:text-sm">{category.name}</strong>
-                <span className="shrink-0 text-base text-[#c9ff35] transition group-hover:translate-x-0.5">→</span>
+                <strong className="text-sm font-black leading-5 text-white">{category.name}</strong>
+                <span aria-hidden="true" className="shrink-0 text-base text-[#c9ff35] transition group-hover:translate-x-0.5">→</span>
               </div>
             </Link>
           ))}
@@ -54,7 +54,7 @@ export default function CategoryGrid() {
         <div className="mt-7 border-t border-white/10 pt-6">
           <div className="mb-4 flex items-end justify-between gap-4">
             <div>
-              <p className="text-[9px] font-black tracking-[.3em] text-zinc-500">POPULÆRE DELER</p>
+              <p className="text-xs font-black tracking-[.24em] text-zinc-300">POPULÆRE DELER</p>
               <h3 className="mt-1 text-lg font-black text-white sm:text-xl">Se nærmere på komponentene</h3>
             </div>
             <Link href="/#produkter" className="hidden text-xs font-bold text-[#c9ff35] sm:block">Se alle produkter →</Link>
@@ -78,10 +78,10 @@ export default function CategoryGrid() {
                 </div>
                 <div className="flex items-center justify-between gap-2 border-t border-white/5 px-3 py-2.5">
                   <div className="min-w-0">
-                    <strong className="block truncate text-xs font-black text-white sm:text-[13px]">{part.name}</strong>
-                    <span className="mt-0.5 block text-[9px] font-bold uppercase tracking-[.14em] text-zinc-500">{part.label}</span>
+                    <strong className="block truncate text-sm font-black text-white">{part.name}</strong>
+                    <span className="mt-0.5 block text-xs font-bold uppercase tracking-[.1em] text-zinc-300">{part.label}</span>
                   </div>
-                  <span className="text-sm text-[#c9ff35] transition group-hover:translate-x-0.5">→</span>
+                  <span aria-hidden="true" className="text-sm text-[#c9ff35] transition group-hover:translate-x-0.5">→</span>
                 </div>
               </Link>
             ))}
