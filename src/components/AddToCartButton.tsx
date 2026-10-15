@@ -21,16 +21,21 @@ export default function AddToCartButton({
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      className={
-        compact
-          ? "mt-2.5 w-full rounded-md bg-[#c9ff35] px-2 py-2.5 text-[10px] font-black text-black transition hover:bg-[#d8ff68] sm:text-[11px]"
-          : "flex-1 rounded-md bg-[#c9ff35] px-6 py-3.5 text-sm font-black text-black transition hover:bg-[#d8ff68]"
-      }
-    >
-      {added ? "Lagt i kurven ✓" : compact ? "Legg i kurv" : "Legg i handlekurv"}
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={handleClick}
+        className={
+          compact
+            ? "mt-2.5 w-full rounded-md bg-[#c9ff35] px-2 py-2.5 text-xs font-black text-black transition hover:bg-[#d8ff68]"
+            : "flex-1 rounded-md bg-[#c9ff35] px-6 py-3.5 text-sm font-black text-black transition hover:bg-[#d8ff68]"
+        }
+      >
+        {added ? "Lagt i kurven ✓" : compact ? "Legg i kurv" : "Legg i handlekurv"}
+      </button>
+      <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {added ? `${product.name} er lagt i handlekurven.` : ""}
+      </span>
+    </>
   );
 }
