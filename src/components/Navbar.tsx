@@ -1,18 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 import CartLink from "@/components/CartLink";
 
 const navItems = [
-  { label: "Hjem", href: "/" },
-  { label: "Sykkeldeler", href: "/kategorier" },
+  { label: "Hjem", href: "/", match: (pathname: string) => pathname === "/" },
+  { label: "Sykkeldeler", href: "/kategorier", match: (pathname: string) => pathname === "/kategorier" || pathname.startsWith("/kategori/") },
   { label: "Merker", href: "/#merker" },
   { label: "Tilbud", href: "/#produkter" },
   { label: "Kontakt", href: "/#kontakt" },
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -32,14 +34,22 @@ export default function Navbar() {
         </a>
 
         <nav aria-label="Hovedmeny" className="ml-auto hidden items-center gap-5 text-sm font-semibold text-zinc-300 xl:flex">
-          <a className="transition hover:text-white" href="/">Hjem</a>
-          <a className="transition hover:text-[#c9ff35]" href="/kategorier">Sykkeldeler</a>
-          <a className="transition hover:text-white" href="/#merker">Merker</a>
-          <a className="transition hover:text-white" href="/#produkter">Tilbud</a>
-          <a className="transition hover:text-white" href="/#kontakt">Kontakt</a>
+          {navItems.map((item) => {
+            const current = item.match?.(pathname) ?? false;
+            return (
+              <a
+                key={item.label}
+                href={item.href}
+                aria-current={current ? "page" : undefined}
+                className={`transition hover:text-[#c9ff35] ${current ? "text-[#c9ff35]" : "hover:text-white"}`}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </nav>
 
-        <form role="search" action="/sok" className="ml-auto hidden h-10 min-w-0 w-[min(30vw,320px)] items-center rounded-lg border border-white/10 bg-white/[.035] px-3 text-sm text-zinc-400 lg:flex xl:ml-2">
+        <form role="search" action="/sok" className="ml-auto hidden h-11 min-w-0 w-[min(30vw,320px)] items-center rounded-lg border border-white/10 bg-white/[.035] px-3 text-sm text-zinc-400 lg:flex xl:ml-2">
           <svg aria-hidden="true" viewBox="0 0 24 24" className="mr-2 h-4 w-4 shrink-0 fill-none stroke-zinc-300" strokeWidth="1.8">
             <circle cx="11" cy="11" r="6.5" />
             <path d="m16 16 4 4" />
@@ -55,7 +65,8 @@ export default function Navbar() {
         <a
           href="/konto"
           aria-label="Min konto"
-          className="hidden h-10 w-10 shrink-0 items-center justify-center text-zinc-200 transition hover:text-[#c9ff35] md:flex"
+          aria-current={pathname === "/konto" ? "page" : undefined}
+          className="hidden h-11 w-11 shrink-0 items-center justify-center text-zinc-200 transition hover:text-[#c9ff35] md:flex"
         >
           <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current" strokeWidth="1.7">
             <circle cx="12" cy="8" r="3.5" />
@@ -71,7 +82,7 @@ export default function Navbar() {
           aria-expanded={menuOpen}
           aria-controls="mobile-navigation"
           onClick={() => setMenuOpen((open) => !open)}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-white/10 text-zinc-100 transition hover:border-white/25 xl:hidden"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-white/10 text-zinc-100 transition hover:border-white/25 xl:hidden"
         >
           <span className="sr-only">Meny</span>
           <span className="relative block h-4 w-5" aria-hidden="true">
@@ -99,29 +110,35 @@ export default function Navbar() {
             </form>
 
             <nav aria-label="Mobilmeny" className="mt-3 grid text-sm font-semibold text-zinc-200">
-              {navItems.map((item, index) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className={`flex items-center justify-between border-b border-white/[.07] py-3.5 transition hover:text-[#c9ff35] ${index === 0 ? "text-[#c9ff35]" : ""}`}
-                >
-                  {item.label}
-                  <span aria-hidden="true" className="text-[#c9ff35]">→</span>
-                </a>
-              ))}
+              {navItems.map((item) => {
+                const current = item.match?.(pathname) ?? false;
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    aria-current={current ? "page" : undefined}
+                    onClick={() => setMenuOpen(false)}
+                    className={`flex min-h-11 items-center justify-between border-b border-white/[.07] py-3.5 transition hover:text-[#c9ff35] ${current ? "text-[#c9ff35]" : ""}`}
+                  >
+                    {item.label}
+                    <span aria-hidden="true" className="text-[#c9ff35]">→</span>
+                  </a>
+                );
+              })}
               <a
                 href="/konto"
+                aria-current={pathname === "/konto" ? "page" : undefined}
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-between border-b border-white/[.07] py-3.5 transition hover:text-[#c9ff35]"
+                className="flex min-h-11 items-center justify-between border-b border-white/[.07] py-3.5 transition hover:text-[#c9ff35]"
               >
                 Min konto
                 <span aria-hidden="true" className="text-[#c9ff35]">→</span>
               </a>
               <a
                 href="/handlekurv"
+                aria-current={pathname === "/handlekurv" ? "page" : undefined}
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-between py-3.5 transition hover:text-[#c9ff35]"
+                className="flex min-h-11 items-center justify-between py-3.5 transition hover:text-[#c9ff35]"
               >
                 Handlekurv
                 <span aria-hidden="true" className="text-[#c9ff35]">→</span>
