@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/CartProvider";
 
 function formatPrice(value: number) {
@@ -20,12 +20,28 @@ function priceToNumber(price: string) {
 export default function CartLink() {
   const { items, itemCount } = useCart();
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  function closeCart({ restoreFocus = true } = {}) {
+    setOpen(false);
+    if (restoreFocus) {
+      window.requestAnimationFrame(() => triggerRef.current?.focus());
+    }
+  }
 
   useEffect(() => {
     if (!open) return;
+
+    window.requestAnimationFrame(() => closeRef.current?.focus());
+
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeCart();
+      }
     }
+
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open]);
@@ -40,12 +56,14 @@ export default function CartLink() {
   return (
     <div className="relative">
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen((value) => !value)}
         aria-label={`Handlekurv med ${itemLabel}`}
         aria-expanded={open}
         aria-controls="cart-panel"
-        className="relative flex h-10 w-10 items-center justify-center text-zinc-100 transition hover:text-[#c9ff35]"
+        aria-haspopup="dialog"
+        className="relative flex h-11 w-11 shrink-0 items-center justify-center text-zinc-100 transition hover:text-[#c9ff35]"
       >
         <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current" strokeWidth="1.7">
           <path d="M3 4h2l2 11h10l2-7H6" />
@@ -60,18 +78,21 @@ export default function CartLink() {
       {open && (
         <div
           id="cart-panel"
+          role="dialog"
+          aria-labelledby="cart-panel-title"
           className="fixed left-3 right-3 top-[76px] z-[70] max-h-[calc(100vh-88px)] overflow-hidden rounded-xl border border-white/10 bg-[#0b0f10] shadow-2xl shadow-black/50 sm:absolute sm:left-auto sm:right-0 sm:top-12 sm:w-[360px]"
         >
           <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
             <div>
               <p className="text-xs font-black tracking-[.18em] text-[#c9ff35]">HANDLEKURV</p>
-              <p className="mt-1 text-sm font-black text-white">{itemLabel}</p>
+              <p id="cart-panel-title" className="mt-1 text-sm font-black text-white">{itemLabel}</p>
             </div>
             <button
+              ref={closeRef}
               type="button"
-              onClick={() => setOpen(false)}
+              onClick={() => closeCart()}
               aria-label="Lukk handlekurv"
-              className="flex h-8 w-8 items-center justify-center rounded-md border border-white/10 text-zinc-300 transition hover:border-white/25 hover:text-white"
+              className="flex h-11 w-11 items-center justify-center rounded-md border border-white/10 text-zinc-300 transition hover:border-white/25 hover:text-white"
             >
               <span aria-hidden="true">×</span>
             </button>
@@ -90,8 +111,8 @@ export default function CartLink() {
               <p className="mt-2 text-xs leading-5 text-zinc-400">Legg til en sykkeldel før du går videre til kassen.</p>
               <Link
                 href="/#produkter"
-                onClick={() => setOpen(false)}
-                className="mt-5 inline-flex rounded-md bg-[#c9ff35] px-4 py-2.5 text-xs font-black text-black transition hover:bg-[#d8ff68]"
+                onClick={() => closeCart({ restoreFocus: false })}
+                className="mt-5 inline-flex min-h-11 items-center rounded-md bg-[#c9ff35] px-4 py-2.5 text-xs font-black text-black transition hover:bg-[#d8ff68]"
               >
                 Se produkter
               </Link>
@@ -124,15 +145,15 @@ export default function CartLink() {
                 <div className="mt-4 grid grid-cols-2 gap-2">
                   <Link
                     href="/handlekurv"
-                    onClick={() => setOpen(false)}
-                    className="rounded-md border border-white/10 px-3 py-2.5 text-center text-xs font-bold text-zinc-200 transition hover:border-white/25"
+                    onClick={() => closeCart({ restoreFocus: false })}
+                    className="flex min-h-11 items-center justify-center rounded-md border border-white/10 px-3 py-2.5 text-center text-xs font-bold text-zinc-200 transition hover:border-white/25"
                   >
                     Handlekurv
                   </Link>
                   <Link
                     href="/kasse"
-                    onClick={() => setOpen(false)}
-                    className="rounded-md bg-[#c9ff35] px-3 py-2.5 text-center text-xs font-black text-black transition hover:bg-[#d8ff68]"
+                    onClick={() => closeCart({ restoreFocus: false })}
+                    className="flex min-h-11 items-center justify-center rounded-md bg-[#c9ff35] px-3 py-2.5 text-center text-xs font-black text-black transition hover:bg-[#d8ff68]"
                   >
                     Til kassen
                   </Link>
