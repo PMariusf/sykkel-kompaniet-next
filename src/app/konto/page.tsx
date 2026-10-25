@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import KontoClient from "./KontoClient";
@@ -100,7 +101,7 @@ export default async function KontoPage() {
                       ))}
                     </div>
                   )}
-                  <a href="/#produkter" className="mt-5 inline-flex text-xs font-bold text-[#c9ff35] hover:text-[#d8ff68]">Se produkter →</a>
+                  <Link href="/#produkter" className="mt-5 inline-flex text-xs font-bold text-[#c9ff35] hover:text-[#d8ff68]">Se produkter →</Link>
                 </section>
               </div>
             </div>

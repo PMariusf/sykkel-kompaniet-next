@@ -4,7 +4,7 @@ type LogoProps = {
 
 export default function Logo({ compact = false }: LogoProps) {
   return (
-    <span className="flex min-w-fit items-center gap-3" aria-label="Sykkel Deler">
+    <span className="brand-logo flex min-w-fit items-center gap-3" aria-label="Sykkel Deler">
       <span
         className={`relative font-black italic leading-none tracking-[-0.18em] ${
           compact ? "text-[2.2rem]" : "text-[2.75rem]"

@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
 import AdminLogin from "./AdminLogin";
 import AdminProductForm from "./AdminProductForm";
 import AdminProductActions from "./AdminProductActions";
@@ -143,6 +144,7 @@ export default async function AdminPage() {
             <h1 className="mt-1 text-2xl font-black tracking-tight">Dashboard</h1>
           </div>
           <div className="flex flex-wrap items-center gap-2">
+            <ThemeToggle />
             <Link href="/admin/ordrer" className="rounded-md bg-[#c9ff35] px-4 py-2 text-xs font-black text-black hover:bg-[#d8ff68]">Ordrer</Link>
             <Link href="/admin/innhold" className="rounded-md border border-[#c9ff35]/25 px-4 py-2 text-xs font-bold text-[#c9ff35] hover:border-[#c9ff35]/60">Innhold & media</Link>
             <Link href="/admin/markedsforing" className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold text-zinc-300 hover:border-[#c9ff35]/40">Markedsføring</Link>

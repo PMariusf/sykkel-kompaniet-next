@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
@@ -34,7 +35,7 @@ export default function AdminLogin() {
   return (
     <main className="min-h-screen bg-[#070b0c] px-4 py-16 text-white">
       <div className="mx-auto max-w-md rounded-xl border border-white/10 bg-[#0b0f10] p-6 shadow-2xl sm:p-8">
-        <p className="text-[10px] font-black tracking-[.32em] text-[#c9ff35]">SYKKEL DELER CMS</p>
+        <div className="flex items-center justify-between gap-4"><p className="text-[10px] font-black tracking-[.32em] text-[#c9ff35]">SYKKEL DELER CMS</p><ThemeToggle /></div>
         <h1 className="mt-3 text-3xl font-black tracking-tight">Admin</h1>
         <p className="mt-2 text-sm leading-6 text-zinc-400">
           Logg inn med en bruker som allerede har fått CMS-tilgang.

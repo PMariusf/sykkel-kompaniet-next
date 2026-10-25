@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
 import AdminLogin from "../AdminLogin";
 import AdminOrderStatus from "./AdminOrderStatus";
 import { SUPABASE_URL, supabaseHeaders } from "@/lib/supabase-rest";
@@ -51,7 +52,7 @@ export default async function AdminOrdersPage() {
       <header className="border-b border-white/10 bg-[#0b0f10]">
         <div className="mx-auto flex max-w-[1420px] flex-wrap items-center justify-between gap-4 px-4 py-5 sm:px-6 lg:px-8">
           <div><p className="text-[10px] font-black tracking-[.32em] text-[#c9ff35]">SYKKEL DELER CMS</p><h1 className="mt-1 text-2xl font-black">Ordreoversikt</h1></div>
-          <div className="flex flex-wrap gap-2"><Link href="/admin" className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold text-zinc-300">Dashboard</Link><Link href="/" className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold text-zinc-300">Se nettsiden</Link></div>
+          <div className="flex flex-wrap gap-2"><ThemeToggle /><Link href="/admin" className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold text-zinc-300">Dashboard</Link><Link href="/" className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold text-zinc-300">Se nettsiden</Link></div>
         </div>
       </header>
 

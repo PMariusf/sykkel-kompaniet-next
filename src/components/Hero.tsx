@@ -50,7 +50,7 @@ export default async function Hero() {
   const content = await getHeroContent();
 
   return (
-    <section className="relative isolate overflow-hidden border-b border-white/10 bg-black">
+    <section className="theme-on-image relative isolate overflow-hidden border-b border-white/10 bg-black">
       <Image
         src={content.image_url || fallback.image_url!}
         alt={content.image_alt || fallback.image_alt!}
