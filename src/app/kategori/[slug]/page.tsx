@@ -30,8 +30,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+type CategoryPageProps = {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ merke?: string | string[] }>;
+};
+
+export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
   const { slug } = await params;
+  const { merke } = await searchParams;
   const category = getCategory(slug);
   if (!category) notFound();
 
@@ -41,6 +47,20 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
     const wanted = category.productCategory.toLowerCase();
     return productCategory === wanted || productCategory.includes(wanted) || wanted.includes(productCategory);
   });
+  const brandMap = new Map<string, { name: string; count: number }>();
+  for (const product of categoryProducts) {
+    const name = product.brand.trim();
+    if (!name) continue;
+    const key = name.toLocaleLowerCase("nb-NO");
+    const existing = brandMap.get(key);
+    brandMap.set(key, { name: existing?.name ?? name, count: (existing?.count ?? 0) + 1 });
+  }
+  const brands = [...brandMap.values()].sort((a, b) => a.name.localeCompare(b.name, "nb-NO"));
+  const requestedBrand = typeof merke === "string" ? merke.trim().toLocaleLowerCase("nb-NO") : "";
+  const selectedBrand = brands.find((brand) => brand.name.toLocaleLowerCase("nb-NO") === requestedBrand)?.name;
+  const visibleProducts = selectedBrand
+    ? categoryProducts.filter((product) => product.brand.trim().toLocaleLowerCase("nb-NO") === requestedBrand)
+    : categoryProducts;
 
   return (
     <>
@@ -63,10 +83,49 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
           </div>
         </section>
 
-        <section className="mx-auto max-w-[1420px] px-4 py-8 sm:px-6 lg:px-8">
-          {categoryProducts.length > 0 ? (
+        <section className="border-b border-white/10 bg-[#081011]">
+          <div className="mx-auto max-w-[1420px] px-4 py-7 sm:px-6 lg:px-8">
+            <p className="text-[10px] font-black tracking-[.3em] text-[#c9ff35]">VELG MERKE</p>
+            <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Finn {category.name.toLocaleLowerCase("nb-NO")} etter merke</h2>
+            {brands.length > 0 ? (
+              <nav aria-label={`Merker i ${category.name}`} className="mt-5 flex flex-wrap gap-2">
+                <Link
+                  href={`/kategori/${category.slug}`}
+                  scroll={false}
+                  aria-current={!selectedBrand ? "page" : undefined}
+                  className={`inline-flex min-h-11 items-center rounded-md border px-4 py-2 text-sm font-bold transition ${!selectedBrand ? "border-[#c9ff35] bg-[#c9ff35] text-black" : "border-white/15 bg-[#0b0f10] text-zinc-200 hover:border-[#c9ff35]/45 hover:text-white"}`}
+                >
+                  Alle merker <span className="ml-2 text-xs opacity-70">{categoryProducts.length}</span>
+                </Link>
+                {brands.map((brand) => {
+                  const active = selectedBrand === brand.name;
+                  return (
+                    <Link
+                      key={brand.name}
+                      href={{ pathname: `/kategori/${category.slug}`, query: { merke: brand.name } }}
+                      scroll={false}
+                      aria-current={active ? "page" : undefined}
+                      className={`inline-flex min-h-11 items-center rounded-md border px-4 py-2 text-sm font-bold transition ${active ? "border-[#c9ff35] bg-[#c9ff35] text-black" : "border-white/15 bg-[#0b0f10] text-zinc-200 hover:border-[#c9ff35]/45 hover:text-white"}`}
+                    >
+                      {brand.name} <span className="ml-2 text-xs opacity-70">{brand.count}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
+            ) : (
+              <p className="mt-3 text-sm text-zinc-400">Merker vises her når produkter legges til i kategorien.</p>
+            )}
+          </div>
+        </section>
+
+        <section id="produkter" className="mx-auto max-w-[1420px] px-4 py-8 sm:px-6 lg:px-8">
+          <p role="status" className="sr-only">Viser {visibleProducts.length} produkter {selectedBrand ? `fra ${selectedBrand}` : "fra alle merker"}.</p>
+          {selectedBrand && (
+            <p className="mb-5 text-sm font-bold text-zinc-300">Viser {visibleProducts.length} av {categoryProducts.length} produkter fra {selectedBrand}</p>
+          )}
+          {visibleProducts.length > 0 ? (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-              {categoryProducts.map((product) => (
+              {visibleProducts.map((product) => (
                 <article key={product.id} className="group overflow-hidden rounded-md border border-white/15 bg-[#0b0f10] transition hover:border-[#c9ff35]/35">
                   <Link href={`/produkter/${product.id}`} className="block">
                     <div className="relative aspect-square overflow-hidden bg-[radial-gradient(circle_at_50%_40%,#202627,#090b0c_72%)]">
