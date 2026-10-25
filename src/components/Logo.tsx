@@ -26,7 +26,7 @@ export default function Logo({ compact = false, showLageret = false }: LogoProps
         <span
           className={`${compact ? "text-[9px]" : "text-[10px]"} mt-1 bg-[linear-gradient(180deg,#eeeeee_0%,#bcbcbc_55%,#767676_100%)] bg-clip-text font-semibold tracking-[.34em] text-transparent`}
         >
-          DELER
+          DELE
         </span>
         {showLageret && <span className="mt-0.5 text-[9px] font-black tracking-[.22em] text-[#c9ff35]">LAGERET</span>}
       </span>
