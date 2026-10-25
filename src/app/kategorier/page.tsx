@@ -32,7 +32,7 @@ export default function CategoriesPage() {
               <Link
                 key={category.slug}
                 href={`/kategori/${category.slug}`}
-                className="group relative min-h-[250px] overflow-hidden rounded-lg border border-white/10 bg-[#0b1011] transition hover:-translate-y-0.5 hover:border-[#c9ff35]/45"
+                className="theme-on-image group relative min-h-[250px] overflow-hidden rounded-lg border border-white/10 bg-[#0b1011] transition hover:-translate-y-0.5 hover:border-[#c9ff35]/45"
               >
                 <Image
                   src={category.image}

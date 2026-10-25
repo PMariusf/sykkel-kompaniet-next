@@ -38,7 +38,7 @@ export default async function CampaignSection() {
         </div>
         <div className="grid gap-4 lg:grid-cols-3">
           {campaigns.map((campaign) => (
-            <article key={campaign.id} className="relative isolate min-h-[230px] overflow-hidden rounded-xl border border-white/10 bg-[#0b0f10] p-6">
+            <article key={campaign.id} className="theme-on-image relative isolate min-h-[230px] overflow-hidden rounded-xl border border-white/10 bg-[#0b0f10] p-6">
               {campaign.image_url && <img src={campaign.image_url} alt="" className="absolute inset-0 -z-20 h-full w-full object-cover opacity-45" />}
               <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/90 via-black/65 to-black/25" />
               {campaign.badge && <span className="inline-flex rounded-full bg-[#c9ff35] px-3 py-1 text-[9px] font-black tracking-[.18em] text-black">{campaign.badge}</span>}

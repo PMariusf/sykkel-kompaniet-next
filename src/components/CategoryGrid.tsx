@@ -28,7 +28,7 @@ export default function CategoryGrid() {
             <Link
               key={category.slug}
               href={`/kategori/${category.slug}`}
-              className="group relative h-[142px] overflow-hidden rounded-md border border-white/15 bg-[#0b1011] transition hover:border-[#c9ff35]/45 sm:h-[150px] lg:h-[138px]"
+              className="theme-on-image group relative h-[142px] overflow-hidden rounded-md border border-white/15 bg-[#0b1011] transition hover:border-[#c9ff35]/45 sm:h-[150px] lg:h-[138px]"
             >
               <Image
                 src={category.image}

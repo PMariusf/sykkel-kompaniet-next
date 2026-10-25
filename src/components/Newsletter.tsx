@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Newsletter() {
   return (
-    <section className="relative isolate overflow-hidden border-b border-white/10 bg-black">
+    <section className="theme-on-image relative isolate overflow-hidden border-b border-white/10 bg-black">
       <Image
         src="/products/hero-bottom.png"
         alt="Syklist i fjellandskap"

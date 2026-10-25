@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import Logo from "@/components/Logo";
 import CartLink from "@/components/CartLink";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const navItems = [
   { label: "Hjem", href: "/", match: (pathname: string) => pathname === "/" },
@@ -29,9 +31,9 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#06090a]/95 backdrop-blur-xl">
       <div className="mx-auto flex min-h-[68px] max-w-[1420px] items-center gap-3 px-4 py-2 sm:min-h-[72px] sm:px-6 lg:px-8 xl:gap-5">
-        <a href="/" aria-label="Sykkel Deler – forsiden" className="shrink-0" onClick={() => setMenuOpen(false)}>
+        <Link href="/" aria-label="Sykkel Deler – forsiden" className="shrink-0" onClick={() => setMenuOpen(false)}>
           <Logo />
-        </a>
+        </Link>
 
         <nav aria-label="Hovedmeny" className="ml-auto hidden items-center gap-5 text-sm font-semibold text-zinc-300 xl:flex">
           {navItems.map((item) => {
@@ -75,6 +77,7 @@ export default function Navbar() {
         </a>
 
         <CartLink />
+        <ThemeToggle />
 
         <button
           type="button"

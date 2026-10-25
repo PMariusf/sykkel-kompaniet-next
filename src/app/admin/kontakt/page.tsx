@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
 import AdminLogin from "../AdminLogin";
 import ContactForm from "./ContactForm";
 import { SUPABASE_URL, supabaseHeaders } from "@/lib/supabase-rest";
@@ -22,7 +23,7 @@ export default async function ContactPage() {
       <header className="border-b border-white/10 bg-[#0b0f10]">
         <div className="mx-auto flex max-w-[1100px] flex-wrap items-center justify-between gap-4 px-4 py-5 sm:px-6">
           <div><p className="text-[10px] font-black tracking-[.32em] text-[#c9ff35]">SYKKEL DELER CMS</p><h1 className="mt-1 text-2xl font-black">Kontaktinformasjon</h1></div>
-          <div className="flex gap-2"><Link href="/admin" className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold">Dashboard</Link><Link href="/admin/innhold" className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold">Innhold</Link></div>
+          <div className="flex gap-2"><ThemeToggle /><Link href="/admin" className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold">Dashboard</Link><Link href="/admin/innhold" className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold">Innhold</Link></div>
         </div>
       </header>
       <div className="mx-auto max-w-[820px] px-4 py-8 sm:px-6">

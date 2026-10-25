@@ -49,7 +49,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   };
 
   return (
-    <html lang="nb" data-scroll-behavior="smooth">
+    <html lang="nb" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem('sykkel-theme');if(t==='light'){document.documentElement.dataset.theme='light';document.documentElement.style.colorScheme='light'}}catch(e){}` }} />
+      </head>
       <body>
         <a href="#main-content" className="skip-link">
           Hopp til hovedinnhold

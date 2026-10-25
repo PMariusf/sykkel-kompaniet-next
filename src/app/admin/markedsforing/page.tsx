@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
 import AdminLogin from "../AdminLogin";
 import AdminMarketingManager from "./AdminMarketingManager";
 import { SUPABASE_URL, supabaseHeaders } from "@/lib/supabase-rest";
@@ -34,6 +35,7 @@ export default async function MarketingAdminPage() {
             <h1 className="mt-1 text-2xl font-black tracking-tight">Markedsføring & media</h1>
           </div>
           <div className="flex flex-wrap gap-2">
+            <ThemeToggle />
             <Link href="/admin" className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold text-zinc-300 hover:border-[#c9ff35]/40">Dashboard</Link>
             <Link href="/admin/innhold" className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold text-zinc-300 hover:border-[#c9ff35]/40">Innhold</Link>
             <Link href="/" className="rounded-md border border-white/10 px-4 py-2 text-xs font-bold text-zinc-300 hover:border-white/25">Se nettsiden</Link>

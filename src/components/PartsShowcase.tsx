@@ -73,7 +73,7 @@ export default function PartsShowcase() {
             <Link
               key={part.id}
               href={`/produkter/${part.id}`}
-              className={`group relative overflow-hidden rounded-xl border border-white/10 bg-[radial-gradient(circle_at_50%_38%,#242a2b_0%,#101415_48%,#070909_100%)] ${part.className}`}
+              className={`theme-on-image group relative overflow-hidden rounded-xl border border-white/10 bg-[radial-gradient(circle_at_50%_38%,#242a2b_0%,#101415_48%,#070909_100%)] ${part.className}`}
             >
               <Image
                 src={part.image}
