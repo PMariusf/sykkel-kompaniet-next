@@ -1,10 +1,11 @@
 type LogoProps = {
   compact?: boolean;
+  showLageret?: boolean;
 };
 
-export default function Logo({ compact = false }: LogoProps) {
+export default function Logo({ compact = false, showLageret = false }: LogoProps) {
   return (
-    <span className="brand-logo flex min-w-fit items-center gap-3" aria-label="Sykkel Deler">
+    <span className="brand-logo flex min-w-fit items-center gap-3" aria-label={showLageret ? "SK Sykkel Deler Lageret" : "Sykkel Deler"}>
       <span
         className={`relative font-black italic leading-none tracking-[-0.18em] ${
           compact ? "text-[2.2rem]" : "text-[2.75rem]"
@@ -27,6 +28,7 @@ export default function Logo({ compact = false }: LogoProps) {
         >
           DELER
         </span>
+        {showLageret && <span className="mt-0.5 text-[9px] font-black tracking-[.22em] text-[#c9ff35]">LAGERET</span>}
       </span>
     </span>
   );

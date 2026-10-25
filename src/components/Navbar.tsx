@@ -31,8 +31,8 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#06090a]/95 backdrop-blur-xl">
       <div className="mx-auto flex min-h-[68px] max-w-[1420px] items-center gap-3 px-4 py-2 sm:min-h-[72px] sm:px-6 lg:px-8 xl:gap-5">
-        <Link href="/" aria-label="Sykkel Deler – forsiden" className="shrink-0" onClick={() => setMenuOpen(false)}>
-          <Logo />
+        <Link href="/" aria-label="Sykkel Deler Lageret – forsiden" className="shrink-0" onClick={() => setMenuOpen(false)}>
+          <Logo showLageret />
         </Link>
 
         <nav aria-label="Hovedmeny" className="ml-auto hidden items-center gap-5 text-sm font-semibold text-zinc-300 xl:flex">
