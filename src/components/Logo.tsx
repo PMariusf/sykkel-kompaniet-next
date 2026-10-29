@@ -12,15 +12,15 @@ export default function Logo({ compact = false }: LogoProps) {
       <Image
         src="/sykkel-deler-logo.svg"
         alt=""
-        width={500}
-        height={96}
+        width={520}
+        height={102}
         className={`logo-dark h-auto ${sizeClass}`}
       />
       <Image
         src="/sykkel-deler-logo-light.svg"
         alt=""
-        width={500}
-        height={96}
+        width={520}
+        height={102}
         className={`logo-light h-auto ${sizeClass}`}
       />
     </span>
