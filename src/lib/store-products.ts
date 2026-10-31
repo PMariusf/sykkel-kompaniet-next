@@ -1,4 +1,4 @@
-import { products as fallbackProducts, type Product } from "@/data/products";
+import { products as fallbackProducts, exampleProducts, type Product } from "@/data/products";
 import { SUPABASE_URL, supabaseHeaders } from "@/lib/supabase-rest";
 
 type CmsProduct = {
@@ -58,6 +58,18 @@ function mapCmsProduct(row: CmsProduct): Product {
   };
 }
 
+// Published CMS entries take precedence; never replace an existing catalog item.
+export function appendExampleProducts(existing: Product[]): Product[] {
+  const ids = new Set(existing.map((product) => product.id));
+  const skus = new Set(existing.map((product) => product.sku?.trim().toLowerCase()).filter(Boolean));
+  const names = new Set(existing.map((product) => `${product.brand} ${product.name}`.trim().toLowerCase()));
+  return [...existing, ...exampleProducts.filter((product) =>
+    !ids.has(product.id) &&
+    !skus.has(product.sku?.trim().toLowerCase()) &&
+    !names.has(`${product.brand} ${product.name}`.trim().toLowerCase())
+  )];
+}
+
 export async function getStoreProducts(): Promise<Product[]> {
   try {
     const response = await fetch(
@@ -65,11 +77,11 @@ export async function getStoreProducts(): Promise<Product[]> {
       { headers: supabaseHeaders(), cache: "no-store" },
     );
 
-    if (!response.ok) return fallbackProducts;
+    if (!response.ok) return appendExampleProducts(fallbackProducts);
     const rows: CmsProduct[] = await response.json();
-    return rows.length ? rows.map(mapCmsProduct) : fallbackProducts;
+    return appendExampleProducts(rows.length ? rows.map(mapCmsProduct) : fallbackProducts);
   } catch {
-    return fallbackProducts;
+    return appendExampleProducts(fallbackProducts);
   }
 }
 

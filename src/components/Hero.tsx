@@ -57,7 +57,7 @@ export default async function Hero() {
         fill
         priority
         sizes="100vw"
-        className="-z-20 object-cover object-[63%_center] sm:object-center"
+        className="-z-20 object-cover object-[63%_top] sm:object-top"
       />
 
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/95 via-black/72 to-black/20 sm:via-black/65 sm:to-black/5" />

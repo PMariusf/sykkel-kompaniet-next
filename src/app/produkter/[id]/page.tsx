@@ -84,7 +84,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     gtin13: product.ean?.replace(/\s/g, "").length === 13 ? product.ean.replace(/\s/g, "") : undefined,
     category: product.category,
     brand: product.brand ? { "@type": "Brand", name: product.brand } : undefined,
-    offers: price != null ? {
+    offers: !product.isExample && price != null ? {
       "@type": "Offer",
       url: productUrl,
       priceCurrency: "NOK",
@@ -113,7 +113,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="relative min-h-[380px] overflow-hidden rounded-lg border border-white/10 bg-[radial-gradient(circle_at_50%_42%,#252c2d,#090b0c_72%)] sm:min-h-[520px]">
               <Image src={product.image} alt={product.name} fill priority sizes="(max-width: 1024px) 100vw, 55vw" className="object-contain p-8 sm:p-14" />
               {product.badge && <span className="absolute left-4 top-4 rounded-full bg-[#c9ff35] px-3 py-1.5 text-xs font-black uppercase tracking-[.1em] text-black">{product.badge}</span>}
-              <span className="absolute bottom-4 left-4 rounded-full border border-white/15 bg-black/60 px-3 py-1.5 text-xs font-black tracking-[.1em] text-white backdrop-blur-sm">LAGER I {warehouse.toUpperCase()}</span>
+              <span className="absolute bottom-4 left-4 rounded-full border border-white/15 bg-black/60 px-3 py-1.5 text-xs font-black tracking-[.1em] text-white backdrop-blur-sm">{product.isExample ? "ILLUSTRASJON · EKSEMPELDATA" : `LAGER I ${warehouse.toUpperCase()}`}</span>
             </div>
 
             <div className="flex flex-col justify-center">
@@ -125,7 +125,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <p className="text-3xl font-black text-white sm:text-4xl">{product.price}</p>
                 {product.compareAtPrice && <p className="text-lg font-bold text-zinc-400 line-through">{product.compareAtPrice}</p>}
               </div>
-              <p className="mt-2 text-sm font-bold text-zinc-300">{stockText(product.stockStatus, product.stockQuantity)}</p>
+              <p className="mt-2 text-sm font-bold text-zinc-300">{product.isExample ? "Lager ikke verifisert · Eksempeldata" : stockText(product.stockStatus, product.stockQuantity)}</p>
 
               <div className="mt-7 border-y border-white/10 py-5 text-sm leading-7 text-zinc-200">
                 <p>{product.description || "Produktbeskrivelse kommer når leverandørdata er lagt inn."}</p>

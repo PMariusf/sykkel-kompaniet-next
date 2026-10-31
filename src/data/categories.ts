@@ -49,6 +49,13 @@ export const categories: Category[] = [
     description: "Styre, stem og grep for bedre kontroll, komfort og kjørefølelse.",
     productCategory: "Styre & cockpit",
   },
+  {
+    slug: "tilbehor",
+    name: "Tilbehør",
+    image: "/products/example-placeholder.svg",
+    description: "Flaskeholdere, pumper og verktøy til tur, pendling og vedlikehold.",
+    productCategory: "Tilbehør",
+  },
 ];
 
 export function getCategory(slug: string) {
