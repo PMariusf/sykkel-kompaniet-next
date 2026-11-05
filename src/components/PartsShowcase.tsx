@@ -49,7 +49,7 @@ const showcaseParts = [
 export default function PartsShowcase() {
   return (
     <section className="border-y border-white/10 bg-[#080b0c] py-16 sm:py-20">
-      <div className="mx-auto max-w-[1420px] px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-355 px-4 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-[10px] font-black tracking-[.32em] text-[#c9ff35]">SE NÆRMERE</p>
@@ -68,7 +68,7 @@ export default function PartsShowcase() {
           </Link>
         </div>
 
-        <div className="grid auto-rows-[220px] gap-3 sm:grid-cols-2 md:grid-cols-4 md:auto-rows-[240px]">
+        <div className="grid auto-rows-55 gap-3 sm:grid-cols-2 md:grid-cols-4 md:auto-rows-60">
           {showcaseParts.map((part) => (
             <Link
               key={part.id}
@@ -83,7 +83,7 @@ export default function PartsShowcase() {
                 className="object-contain p-7 transition duration-500 group-hover:scale-[1.06] md:p-9"
               />
 
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/70 to-transparent px-4 pb-4 pt-14">
+              <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black via-black/70 to-transparent px-4 pb-4 pt-14">
                 <p className="text-[9px] font-black uppercase tracking-[.22em] text-[#c9ff35]">
                   {part.category}
                 </p>
