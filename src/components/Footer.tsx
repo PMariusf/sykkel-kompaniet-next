@@ -60,6 +60,7 @@ export default async function Footer() {
             <Link className={linkClass} href="/#produkter">Produkter</Link>
             <Link className={linkClass} href="/#merker">Merker</Link>
             <Link className={linkClass} href="/">Forsiden</Link>
+            <Link className={linkClass} href="/personvern">Personvern</Link>
           </div>
         </nav>
 
